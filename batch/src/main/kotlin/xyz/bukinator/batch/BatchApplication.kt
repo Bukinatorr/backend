@@ -1,4 +1,4 @@
-package xyz.bukinator.bukinator
+package xyz.bukinator.batch
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class BukinatorApplication
 
 fun main(args: Array<String>) {
-	runApplication<BukinatorApplication>(*args)
+    runApplication<BukinatorApplication>(*args)
 }
