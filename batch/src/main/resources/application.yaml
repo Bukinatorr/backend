@@ -1,12 +1,5 @@
 server:
-  port: 10004
-  ssl:
-    enabled: false # Uses self-signed certificate because no key-store configuration is specified.
+  port: 8081
 spring:
   profiles:
     active: local
-  data:
-    mongodb:
-      uri: mongodb://local:1234@localhost:27017/account
-service:
-  name: helloService
