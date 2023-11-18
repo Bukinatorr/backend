@@ -3,7 +3,7 @@ on:
     branches:
       - '**'
 jobs:
-  build:
+  checkLint:
     runs-on: ubuntu-latest
 
     steps:
