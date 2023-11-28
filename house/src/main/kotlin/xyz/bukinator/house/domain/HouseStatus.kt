@@ -1,4 +1,4 @@
-package xyz.bukinator.domain
+package xyz.bukinator.house.domain
 
 enum class HouseStatus {
     OPEN,

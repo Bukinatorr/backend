@@ -1,4 +1,4 @@
-package xyz.bukinator.domain
+package xyz.bukinator.house.domain
 
 import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter
