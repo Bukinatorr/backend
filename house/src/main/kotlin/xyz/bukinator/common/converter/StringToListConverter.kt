@@ -1,4 +1,4 @@
-package xyz.bukinator.house.model.converter
+package xyz.bukinator.common.converter
 
 import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter

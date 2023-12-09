@@ -1,4 +1,4 @@
-package xyz.bukinator.house.model
+package xyz.bukinator.common
 
 import jakarta.persistence.Column
 import jakarta.persistence.MappedSuperclass
