@@ -6,7 +6,7 @@ import jakarta.persistence.Embeddable
 import org.hibernate.annotations.Comment
 
 @Embeddable
-class Price (
+class Price(
     @Column(name = "price_deposit", nullable = false)
     @Comment("보증금")
     val priceDeposit: Int,
@@ -22,7 +22,5 @@ class Price (
     @Column(name = "price_manage_includes")
     @Convert(converter = StringToListConverter::class)
     @Comment("관리비 포함 항목")
-    val priceManageIncludes: List<String>?
-) {
-
-}
+    val priceManageIncludes: List<String>?,
+)

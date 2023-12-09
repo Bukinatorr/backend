@@ -5,7 +5,7 @@ import org.hibernate.annotations.Comment
 import java.time.LocalDateTime
 
 @Embeddable
-class Origin (
+class Origin(
     @Column(name = "origin_source", nullable = false)
     @Comment("데이터 출처")
     val originSource: String,
@@ -16,5 +16,5 @@ class Origin (
 
     @Column(name = "origin_updated_at")
     @Comment("데이터 출처 update_at 정보")
-    val originUpdatedAt: LocalDateTime?
+    val originUpdatedAt: LocalDateTime?,
 )

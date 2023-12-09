@@ -12,5 +12,5 @@ class LatLng(
 
     @Column(name = "location_lng", nullable = false)
     @Comment("경도")
-    val locationLng: Double
+    val locationLng: Double,
 )

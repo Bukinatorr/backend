@@ -1,6 +1,12 @@
 package xyz.bukinator.house.domain
 
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Embedded
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.Table
 import org.hibernate.annotations.Comment
 import org.hibernate.annotations.Where
 import java.time.LocalDate
@@ -8,7 +14,7 @@ import java.time.LocalDate
 @Entity
 @Table(name = "house")
 @Where(clause = "deleted_at is null")
-data class House (
+data class House(
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -106,5 +112,5 @@ data class House (
 
     @Embedded
     @Comment("주소 정보")
-    val address: Address
+    val address: Address,
 ) : BaseEntity<Long>()

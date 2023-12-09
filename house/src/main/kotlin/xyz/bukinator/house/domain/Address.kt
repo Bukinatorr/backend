@@ -5,7 +5,7 @@ import jakarta.persistence.Embeddable
 import org.hibernate.annotations.Comment
 
 @Embeddable
-class Address (
+class Address(
     @Column(name = "address_local1", nullable = false)
     @Comment("시 정보")
     val addressLocal1: String,
@@ -24,5 +24,5 @@ class Address (
 
     @Column(name = "address_jibun", nullable = false)
     @Comment("지번 주소")
-    val addressJibun: String
+    val addressJibun: String,
 )
