@@ -1,4 +1,4 @@
-package xyz.bukinator.house.model
+package xyz.bukinator.house.model.embeddable
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
 import org.hibernate.annotations.Comment

@@ -10,6 +10,14 @@ import jakarta.persistence.Table
 import org.hibernate.annotations.Comment
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.Where
+import xyz.bukinator.house.model.converter.StringToListConverter
+import xyz.bukinator.house.model.embeddable.Address
+import xyz.bukinator.house.model.embeddable.Area
+import xyz.bukinator.house.model.embeddable.Floor
+import xyz.bukinator.house.model.embeddable.LatLng
+import xyz.bukinator.house.model.embeddable.Origin
+import xyz.bukinator.house.model.embeddable.Price
+import xyz.bukinator.house.model.enumerate.HouseStatus
 import java.time.LocalDate
 import java.util.UUID
 

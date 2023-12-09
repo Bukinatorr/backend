@@ -1,9 +1,10 @@
-package xyz.bukinator.house.model
+package xyz.bukinator.house.model.embeddable
 
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Embeddable
 import org.hibernate.annotations.Comment
+import xyz.bukinator.house.model.converter.StringToListConverter
 
 @Embeddable
 class Price(
