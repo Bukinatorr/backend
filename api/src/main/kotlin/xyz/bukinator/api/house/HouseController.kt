@@ -5,15 +5,15 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import xyz.bukinator.api.house.dto.ListHouseRequest
 import xyz.bukinator.api.house.dto.ListHouseResponse
-import xyz.bukinator.house.service.HouseService
+import xyz.bukinator.house.service.HouseQueryService
 
 @RequestMapping("/api/house")
 class HouseController(
-    private val houseService: HouseService,
+    private val houseQueryService: HouseQueryService,
 ) {
     @GetMapping("/")
     fun list(@RequestBody body: ListHouseRequest): ListHouseResponse {
-        val result = houseService.list(
+        val result = houseQueryService.list(
             criteria = body.querySpecification.toQueryCriteria(),
             page = body.page.page,
             size = body.page.size
