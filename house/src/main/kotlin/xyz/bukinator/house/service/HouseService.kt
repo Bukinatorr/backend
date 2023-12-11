@@ -87,7 +87,7 @@ class HouseService(
             criteriaBuilder.and(*predicates.toTypedArray())
         }
 
-        return houseRepository.findAll(spec, pageable)
+        return houseRepository.findAll(spec, pageable).content
     }
 
     @Transactional
