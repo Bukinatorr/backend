@@ -18,10 +18,10 @@ class HouseQueryService(
 ) {
 
     @Transactional(readOnly = true)
-    fun list(criteria: HouseQueryCriteria, page: Int, size: Int): Page<House> {
+    fun list(criteria: HouseQueryCriteria, page: Int, size: Int): List<House> {
         val pageable = PageRequest.of(page, size)
 
-        return houseRepository.findAll(buildSpecification(criteria), pageable)
+        return houseRepository.findAll(buildSpecification(criteria), pageable).content
     }
 
     private fun buildSpecification(criteria: HouseQueryCriteria): Specification<House> {
