@@ -3,7 +3,6 @@ package xyz.bukinator.house.service
 import jakarta.persistence.criteria.Predicate
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -18,7 +17,6 @@ import java.util.UUID
 @Service
 class HouseService(
     val houseRepository: HouseRepository,
-    val
 ) {
     @Transactional(readOnly = true)
     fun get(id: UUID) = houseRepository.findById(id)
