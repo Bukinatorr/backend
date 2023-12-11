@@ -1,7 +1,6 @@
 package xyz.bukinator.house.service
 
 import jakarta.persistence.criteria.Predicate
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
@@ -22,7 +21,7 @@ class HouseService(
     fun get(id: UUID) = houseRepository.findById(id)
 
     @Transactional(readOnly = true)
-    fun list(criteria: HouseQueryCriteria, page: Int, size: Int): Page<House> {
+    fun list(criteria: HouseQueryCriteria, page: Int, size: Int): List<House> {
         val pageable = PageRequest.of(page, size)
         val spec: Specification<House> = Specification { root, _, criteriaBuilder ->
             val predicates = mutableListOf<Predicate>()
