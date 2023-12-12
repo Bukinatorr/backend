@@ -16,14 +16,19 @@ class HouseQueryService(
     private val houseRepository: HouseRepository,
 ) {
 
-    @Transactional(readOnly = true)
     fun list(criteria: HouseQueryCriteria, page: Int, size: Int): List<House> {
-        val pageable = PageRequest.of(page, size)
-
-        return houseRepository.findAll(buildSpecification(criteria), pageable).content
+        return houseRepository.findAll(
+            buildSpecification(criteria = criteria),
+            PageRequest.of(page, size)
+        ).content
     }
 
-    private fun buildSpecification(criteria: HouseQueryCriteria): Specification<House> {
+    @Transactional(readOnly = true)
+    fun list(specification: Specification<House>, pageable: PageRequest): List<House> {
+        return list(specification, pageable)
+    }
+
+    internal fun buildSpecification(criteria: HouseQueryCriteria): Specification<House> {
         return Specification { root, _, criteriaBuilder ->
             val predicates = mutableListOf<Predicate>()
 
