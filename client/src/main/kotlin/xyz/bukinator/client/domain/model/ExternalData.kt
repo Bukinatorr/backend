@@ -8,20 +8,14 @@ import com.google.gson.JsonObject
  */
 data class ExternalDataSummary (
     val source: ExternalDataSource,
-    val dataType: ExternalDataType,
     val data: List<JsonObject>
 )
 
 class ExternalDataDetail (
     val source: ExternalDataSource,
-    val dataType: ExternalDataType,
     val data: JsonObject
 )
 
 enum class ExternalDataSource {
-    ZIGBANG, SOURCE_ELSE
-}
-
-enum class ExternalDataType {
-    ONEROOM, OFFICETEL, DATA_ELSE
+    ZIGBANG_ONEROOM, ZIGBANG_OFFICETEL, SOURCE_ELSE
 }

@@ -6,7 +6,8 @@ import xyz.bukinator.client.domain.model.ExternalDataSource
 object ExternalDataFetcherFactory {
     fun createFetcher(externalDataSource: ExternalDataSource): ExternalDataFetcher {
         return when (externalDataSource) {
-            ExternalDataSource.ZIGBANG -> ZigbangOneroomDataFetcher()
+            ExternalDataSource.ZIGBANG_ONEROOM -> ZigbangOneroomDataFetcher()
+            ExternalDataSource.ZIGBANG_OFFICETEL -> ZigbangOneroomDataFetcher()
             else -> throw IllegalArgumentException("Unknown data source")
         }
     }
