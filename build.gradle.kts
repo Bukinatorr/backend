@@ -15,6 +15,14 @@ java {
     sourceCompatibility = JavaVersion.VERSION_17
 }
 
+tasks.bootJar {
+    enabled = false
+}
+
+tasks.jar {
+    enabled = true
+}
+
 allprojects {
     group = "xyz.bukinator"
     version = "0.0.1-SNAPSHOT"
@@ -59,6 +67,8 @@ subprojects {
         implementation("org.springframework.boot:spring-boot-starter")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+        implementation("com.google.code.gson:gson")
     }
 
     configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
@@ -95,6 +105,8 @@ project(":house") {
 project(":client") {
     dependencies {
         implementation(project(":util"))
+        implementation("org.springframework.boot:spring-boot-starter-web")
+        implementation("org.springframework.boot:spring-boot-starter-webflux")
     }
 }
 
