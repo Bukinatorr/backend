@@ -16,6 +16,7 @@ class HouseQueryService(
     private val houseRepository: HouseRepository,
 ) {
 
+    @Transactional(readOnly = true)
     fun list(criteria: HouseQueryCriteria, page: Int, size: Int): List<House> {
         return houseRepository.findAll(
             buildSpecification(criteria = criteria),
@@ -29,11 +30,10 @@ class HouseQueryService(
     }
 
     internal fun buildSpecification(criteria: HouseQueryCriteria): Specification<House> {
-        return Specification { root, _, criteriaBuilder ->
+        return Specification<House> { root, _, criteriaBuilder ->
             val predicates = mutableListOf<Predicate>()
 
             criteria.salesType?.let {
-                // TODO: Fix to use enum
                 val salesType = root.get<String>("salesType")
                 predicates.add(criteriaBuilder.equal(salesType, it))
             }
@@ -88,6 +88,10 @@ class HouseQueryService(
 
             criteria.parkingCount?.let {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("parkingCount"), it))
+            }
+
+            if (predicates.isEmpty()) {
+                throw IllegalArgumentException("No valid criteria provided")
             }
 
             criteriaBuilder.and(*predicates.toTypedArray())
