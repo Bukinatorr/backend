@@ -9,21 +9,21 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.Comment
-import org.hibernate.annotations.Where
+import xyz.bukinator.house.dto.CreateHouseDto
+import xyz.bukinator.house.dto.UpdateHouseDto
 import java.time.LocalDate
 
 @Entity
 @Table(name = "house")
-@Where(clause = "deleted_at is null")
 data class House(
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    override val id: Long,
+    val id: Long? = null,
 
     @Embedded
     @Comment("데이터 원천 메타 정보")
-    val origin: Origin,
+    var origin: Origin,
 
     @Column(name = "sales_type", nullable = false)
     @Comment("판매 타입")
@@ -31,7 +31,7 @@ data class House(
 
     @Column(name = "house_name")
     @Comment("건물 이름")
-    val houseName: String?,
+    var houseName: String?,
 
     @Column(name = "house_type")
     @Comment("방 타입")
@@ -47,36 +47,36 @@ data class House(
 
     @Column(name = "thumbnail")
     @Comment("썸네일 이미지 링크")
-    val thumbnail: String,
+    var thumbnail: String,
 
     @Column(name = "images", length = 5000)
     @Convert(converter = StringToListConverter::class)
     @Comment("방 이미지 링크")
-    val images: List<String>,
+    var images: List<String>,
 
     @Embedded
     @Comment("방 가격 정보")
-    val price: Price,
+    var price: Price,
 
     @Embedded
     @Comment("방 면적 정보")
-    val area: Area,
+    var area: Area,
 
     @Column(name = "title")
     @Comment("매물 제목")
-    val title: String,
+    var title: String,
 
     @Column(name = "description", length = 5000)
     @Comment("매물 설명")
-    val description: String,
+    var description: String,
 
     @Column(name = "status")
     @Comment("매물 상태")
-    val status: HouseStatus,
+    var status: HouseStatus,
 
     @Embedded
     @Comment("위치 정보")
-    val location: LatLng,
+    val location: Location,
 
     @Column(name = "parking_count")
     @Comment("주차 대수")
@@ -88,7 +88,7 @@ data class House(
 
     @Column(name = "movin_date")
     @Comment("입주일")
-    val movinDate: LocalDate,
+    var movinDate: LocalDate,
 
     @Column(name = "approve_date")
     @Comment("승인일")
@@ -100,7 +100,7 @@ data class House(
 
     @Column(name = "pnu")
     @Comment("시군구 코드")
-    val pnu: String,
+    var pnu: String,
 
     @Embedded
     @Comment("층수 정보")
@@ -109,9 +109,54 @@ data class House(
     @Column(name = "options")
     @Convert(converter = StringToListConverter::class)
     @Comment("옵션 정보")
-    val options: List<String>,
+    var options: List<String>,
 
     @Embedded
     @Comment("주소 정보")
     val address: Address,
-) : BaseEntity<Long>()
+) : BaseEntity<Long>() {
+    companion object {
+        fun create(dto: CreateHouseDto): House {
+            return House(
+                origin = Origin(dto.originId, dto.originSource, dto.originUpdatedAt),
+                salesType = dto.salesType,
+                houseName = dto.houseName,
+                houseType = dto.houseType,
+                roomType = dto.roomType,
+                roomDirection = dto.roomDirection,
+                thumbnail = dto.thumbnail,
+                images = dto.images,
+                price = Price(dto.priceDeposit, dto.priceRent, dto.priceManage, dto.priceManageIncludes),
+                area = Area(dto.areaContract, dto.areaSupply, dto.areaIndividual),
+                title = dto.title,
+                description = dto.description,
+                status = HouseStatus.valueOf(dto.status),
+                location = Location(dto.lat, dto.lng),
+                parkingCount = dto.parkingCount,
+                elevator = dto.elevator,
+                movinDate = dto.movinDate,
+                approveDate = dto.approveDate,
+                residenceType = dto.residenceType,
+                pnu = dto.pnu,
+                floor = Floor(dto.floorTotal, dto.floorTarget),
+                options = dto.options,
+                address = Address(dto.addressLocal1, dto.addressLocal2, dto.addressLocal3, dto.addressLocal4, dto.addressJibun)
+            )
+        }
+    }
+
+    fun modify(dto: UpdateHouseDto) {
+        this.origin.originUpdatedAt = dto.originUpdatedAt ?: this.origin.originUpdatedAt
+        this.houseName = dto.houseName
+        this.thumbnail = dto.thumbnail
+        this.images = dto.images
+        this.price = Price(dto.priceDeposit, dto.priceRent, dto.priceManage, dto.priceManageIncludes ?: this.price.priceManageIncludes)
+        this.area = Area(dto.areaContract ?: this.area.areaContract, dto.areaSupply ?: this.area.areaSupply, dto.areaIndividual ?: this.area.areaIndividual)
+        this.title = dto.title
+        this.description = dto.description
+        this.status = HouseStatus.valueOf(dto.status)
+        this.movinDate = dto.movinDate
+        this.pnu = dto.pnu
+        this.options = dto.options
+    }
+}
