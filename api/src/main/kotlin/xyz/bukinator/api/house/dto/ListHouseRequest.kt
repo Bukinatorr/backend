@@ -35,18 +35,22 @@ data class ListHouseRequest(
                 salesType = salesType,
                 roomType = roomType,
                 houseType = houseType,
-                approveDateAfter = LocalDate.parse(approveDateAfter, DateTimeFormatter.ISO_DATE),
+                approveDateAfter = approveDateAfter?.let { LocalDate.parse(it, DateTimeFormatter.ISO_DATE) },
                 minFloor = minFloor,
-                screenLocation = HouseQueryCriteria.ScreenLocation(
-                    northWest = LatLng(
-                        lat = maxLat!!,
-                        lng = minLng!!
-                    ),
-                    southEast = LatLng(
-                        lat = minLat!!,
-                        lng = maxLng!!
+                screenLocation = if (minLat != null && maxLat != null && minLng != null && maxLng != null) {
+                    HouseQueryCriteria.ScreenLocation(
+                        northWest = LatLng(
+                            lat = maxLat,
+                            lng = minLng
+                        ),
+                        southEast = LatLng(
+                            lat = minLat,
+                            lng = maxLng
+                        )
                     )
-                ),
+                } else {
+                    null
+                },
                 deposit = if (minDeposit != null && maxDeposit != null) {
                     HouseQueryCriteria.Deposit(
                         min = minDeposit,
