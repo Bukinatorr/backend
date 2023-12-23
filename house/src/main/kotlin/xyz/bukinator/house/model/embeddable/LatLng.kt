@@ -1,4 +1,4 @@
-package xyz.bukinator.house.domain
+package xyz.bukinator.house.model.embeddable
 
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
@@ -8,9 +8,9 @@ import org.hibernate.annotations.Comment
 class LatLng(
     @Column(name = "location_lat", nullable = false)
     @Comment("위도")
-    val locationLat: Double,
+    val lat: Double,
 
     @Column(name = "location_lng", nullable = false)
     @Comment("경도")
-    val locationLng: Double,
+    val lng: Double,
 )
