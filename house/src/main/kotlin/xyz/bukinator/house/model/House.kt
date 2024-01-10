@@ -10,9 +10,9 @@ import jakarta.persistence.Table
 import org.hibernate.annotations.Comment
 import org.hibernate.annotations.GenericGenerator
 import xyz.bukinator.common.BaseEntity
+import xyz.bukinator.common.converter.StringToListConverter
 import xyz.bukinator.house.dto.CreateHouseDto
 import xyz.bukinator.house.dto.UpdateHouseDto
-import xyz.bukinator.common.converter.StringToListConverter
 import xyz.bukinator.house.model.embeddable.Address
 import xyz.bukinator.house.model.embeddable.Area
 import xyz.bukinator.house.model.embeddable.Floor
@@ -26,6 +26,7 @@ import java.util.UUID
 @Entity
 @Table(name = "house")
 class House(
+    @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")

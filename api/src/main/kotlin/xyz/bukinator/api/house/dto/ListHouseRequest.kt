@@ -1,6 +1,6 @@
 package xyz.bukinator.api.house.dto
 
-import xyz.bukinator.house.model.embeddable.LatLng
+import xyz.bukinator.house.model.embeddable.Location
 import xyz.bukinator.house.service.dto.HouseQueryCriteria
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -39,11 +39,11 @@ data class ListHouseRequest(
                 minFloor = minFloor,
                 screenLocation = if (minLat != null && maxLat != null && minLng != null && maxLng != null) {
                     HouseQueryCriteria.ScreenLocation(
-                        northWest = LatLng(
+                        northWest = Location(
                             lat = maxLat,
                             lng = minLng
                         ),
-                        southEast = LatLng(
+                        southEast = Location(
                             lat = minLat,
                             lng = maxLng
                         )

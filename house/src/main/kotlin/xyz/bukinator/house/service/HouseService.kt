@@ -19,9 +19,9 @@ class HouseService(
     }
 
     @Transactional
-    fun updateHouse(id: Long, dto: UpdateHouseDto): House {
-        val house = houseRepository.findById(id)
-            .orElseThrow<RuntimeException> { RuntimeException("존재하지 않는 House 입니다: $id") }
+    fun updateHouse(id: UUID, dto: UpdateHouseDto): House {
+        val house = houseRepository.findById(id).orElse(null)
+            ?: throw RuntimeException("존재하지 않는 House 입니다: $id")
         house.modify(dto)
 
         return houseRepository.save(house)
@@ -44,6 +44,6 @@ class HouseService(
             it.deletedAt = LocalDateTime.now()
             houseRepository.save(it)
             // TODO: Define Exception
-        } ?: throw Exception("Not found")
+        } ?: throw RuntimeException("Not found")
     }
 }

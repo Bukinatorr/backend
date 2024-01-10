@@ -15,7 +15,7 @@ import xyz.bukinator.house.model.House
 import xyz.bukinator.house.model.embeddable.Address
 import xyz.bukinator.house.model.embeddable.Area
 import xyz.bukinator.house.model.embeddable.Floor
-import xyz.bukinator.house.model.embeddable.LatLng
+import xyz.bukinator.house.model.embeddable.Location
 import xyz.bukinator.house.model.embeddable.Origin
 import xyz.bukinator.house.model.embeddable.Price
 import xyz.bukinator.house.model.enumerate.HouseStatus
@@ -70,7 +70,7 @@ class HouseControllerTest : BaseIntegrationTest() {
                     ),
                     title = "luctus",
                     status = HouseStatus.OPEN,
-                    location = LatLng(lat = 4.5, lng = 6.7),
+                    location = Location(lat = 4.5, lng = 6.7),
                     parkingCount = 4773,
                     elevator = false,
                     movinDate = LocalDate.now(),
