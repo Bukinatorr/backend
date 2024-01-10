@@ -2,6 +2,8 @@ package xyz.bukinator.house.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import xyz.bukinator.house.dto.CreateHouseDto
+import xyz.bukinator.house.dto.UpdateHouseDto
 import xyz.bukinator.house.model.House
 import xyz.bukinator.house.repository.HouseRepository
 import java.time.LocalDateTime
@@ -15,7 +17,16 @@ class HouseService(
     fun get(id: UUID) = houseRepository.findById(id)
 
     @Transactional
-    fun create(house: House): House = houseRepository.save(house)
+    fun create(dto: CreateHouseDto): House {
+        return houseRepository.save(House.create(dto))
+    }
+
+    @Transactional
+    fun update(id: UUID, updateDto: UpdateHouseDto): House {
+        val house = get(id).orElseThrow { Exception("House not found") }
+        house.modify(updateDto)
+        return houseRepository.save(house)
+    }
 
     @Transactional
     fun delete(id: UUID) {

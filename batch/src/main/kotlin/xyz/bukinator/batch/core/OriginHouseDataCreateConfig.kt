@@ -16,7 +16,6 @@ import org.springframework.transaction.PlatformTransactionManager
 import xyz.bukinator.client.domain.model.ExternalDataSummary
 import xyz.bukinator.house.domain.House
 import xyz.bukinator.house.dto.CreateHouseDto
-import xyz.bukinator.house.service.HouseService
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -29,7 +28,7 @@ class OriginHouseDataCreateConfig(
 ) {
 
     @Bean
-    fun originHouseDateUpdateJob() : Job {
+    fun originHouseDateUpdateJob(): Job {
         return JobBuilder("now()", jobRepository)
             .listener(jobListener())
             .start(oneRoomUpdateStep())
@@ -38,7 +37,7 @@ class OriginHouseDataCreateConfig(
 
     @Bean
     @JobScope
-    fun oneRoomUpdateStep() : Step {
+    fun oneRoomUpdateStep(): Step {
         return StepBuilder("oneRoomUpdateStep", jobRepository)
             .chunk<ExternalDataSummary, List<CreateHouseDto>>(100, transactionManager)
             .reader(originHouseDataReader)

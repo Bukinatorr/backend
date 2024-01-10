@@ -25,7 +25,7 @@ data class House(
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
-    override val id: UUID,
+    var id: UUID? = null,
 
     @Embedded
     @Comment("데이터 원천 메타 정보")
@@ -33,7 +33,7 @@ data class House(
 
     @Column(name = "sales_type", nullable = false)
     @Comment("판매 타입")
-    val salesType: String,
+    var salesType: String,
 
     @Column(name = "house_name")
     @Comment("건물 이름")
@@ -41,15 +41,15 @@ data class House(
 
     @Column(name = "house_type")
     @Comment("방 타입")
-    val houseType: String,
+    var houseType: String,
 
     @Column(name = "room_type")
     @Comment("방 구조")
-    val roomType: String,
+    var roomType: String,
 
     @Column(name = "room_direction")
     @Comment("방 향")
-    val roomDirection: String,
+    var roomDirection: String,
 
     @Column(name = "thumbnail")
     @Comment("썸네일 이미지 링크")
@@ -82,15 +82,15 @@ data class House(
 
     @Embedded
     @Comment("위치 정보")
-    val location: Location,
+    var location: Location,
 
     @Column(name = "parking_count")
     @Comment("주차 대수")
-    val parkingCount: Int,
+    var parkingCount: Int,
 
     @Column(name = "elevator")
     @Comment("승강기 존재 유무")
-    val elevator: Boolean,
+    var elevator: Boolean,
 
     @Column(name = "movin_date")
     @Comment("입주일")
@@ -98,11 +98,11 @@ data class House(
 
     @Column(name = "approve_date")
     @Comment("승인일")
-    val approveDate: LocalDate?,
+    var approveDate: LocalDate?,
 
     @Column(name = "residence_type")
     @Comment("주거 형태")
-    val residenceType: String,
+    var residenceType: String,
 
     @Column(name = "pnu")
     @Comment("시군구 코드")
@@ -110,7 +110,7 @@ data class House(
 
     @Embedded
     @Comment("층수 정보")
-    val floor: Floor,
+    var floor: Floor,
 
     @Column(name = "options")
     @Convert(converter = StringToListConverter::class)
@@ -119,7 +119,7 @@ data class House(
 
     @Embedded
     @Comment("주소 정보")
-    val address: Address,
+    var address: Address,
 ) : BaseEntity<Long>() {
     companion object {
         fun create(dto: CreateHouseDto): House {
@@ -151,7 +151,7 @@ data class House(
         }
     }
 
-    fun modify(dto: UpdateHouseDto) {
+    internal fun modify(dto: UpdateHouseDto) {
         this.origin.originUpdatedAt = dto.originUpdatedAt ?: this.origin.originUpdatedAt
         this.houseName = dto.houseName
         this.thumbnail = dto.thumbnail

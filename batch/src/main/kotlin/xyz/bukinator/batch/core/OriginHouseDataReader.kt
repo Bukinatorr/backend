@@ -30,4 +30,3 @@ class OriginHouseDataReader : ItemReader<ExternalDataSummary> {
         const val FETCHABLE_GEOHASH = "wydm"
     }
 }
-
