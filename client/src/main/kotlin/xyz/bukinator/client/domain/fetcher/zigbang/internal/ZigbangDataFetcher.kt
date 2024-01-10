@@ -26,7 +26,6 @@ internal open class ZigbangDataFetcher {
             .uri {
                 it.path("/v2/items/oneroom")
                     .queryParam("domain", "zigbang")
-                    .queryParam("checkAnyItemWithoutFilter", true)
                     .queryParam("geohash", geoHash)
                     .build()
             }
