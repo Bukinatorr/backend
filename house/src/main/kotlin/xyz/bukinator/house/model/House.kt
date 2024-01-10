@@ -1,25 +1,31 @@
-package xyz.bukinator.house.domain
+package xyz.bukinator.house.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.Comment
+import org.hibernate.annotations.GenericGenerator
+import xyz.bukinator.common.BaseEntity
+import xyz.bukinator.common.converter.StringToListConverter
 import xyz.bukinator.house.dto.CreateHouseDto
 import xyz.bukinator.house.dto.UpdateHouseDto
+import xyz.bukinator.house.model.embeddable.*
+import xyz.bukinator.house.model.enumerate.HouseStatus
 import java.time.LocalDate
+import java.util.UUID
 
 @Entity
 @Table(name = "house")
 data class House(
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(columnDefinition = "BINARY(16)")
+    override val id: UUID,
 
     @Embedded
     @Comment("데이터 원천 메타 정보")
