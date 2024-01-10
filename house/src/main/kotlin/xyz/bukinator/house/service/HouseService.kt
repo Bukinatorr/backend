@@ -6,6 +6,7 @@ import xyz.bukinator.house.dto.CreateHouseDto
 import xyz.bukinator.house.dto.UpdateHouseDto
 import xyz.bukinator.house.model.House
 import xyz.bukinator.house.repository.HouseRepository
+import java.lang.RuntimeException
 import java.time.LocalDateTime
 import java.util.*
 
@@ -20,11 +21,9 @@ class HouseService(
 
     @Transactional
     fun updateHouse(id: UUID, dto: UpdateHouseDto): House {
-        val house = houseRepository.findById(id).orElse(null)
-            ?: throw RuntimeException("존재하지 않는 House 입니다: $id")
-        house.modify(dto)
-
-        return houseRepository.save(house)
+        return houseRepository.findById(id).orElse(null)?.let {
+            houseRepository.save(it.modify(dto))
+        } ?: throw Exception("Not found")
     }
 
     @Transactional
@@ -43,7 +42,6 @@ class HouseService(
         get(id).orElse(null)?.let {
             it.deletedAt = LocalDateTime.now()
             houseRepository.save(it)
-            // TODO: Define Exception
         } ?: throw RuntimeException("Not found")
     }
 }

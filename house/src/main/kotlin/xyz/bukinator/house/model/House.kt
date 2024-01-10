@@ -156,7 +156,7 @@ class House(
         }
     }
 
-    fun modify(dto: UpdateHouseDto) {
+    internal fun modify(dto: UpdateHouseDto): House {
         this.origin.originUpdatedAt = dto.originUpdatedAt ?: this.origin.originUpdatedAt
         this.houseName = dto.houseName
         this.thumbnail = dto.thumbnail
@@ -169,5 +169,7 @@ class House(
         this.movinDate = dto.movinDate
         this.pnu = dto.pnu
         this.options = dto.options
+
+        return this
     }
 }
