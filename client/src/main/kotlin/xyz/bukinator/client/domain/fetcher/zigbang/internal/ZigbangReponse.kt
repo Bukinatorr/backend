@@ -28,5 +28,5 @@ internal data class ItemListResponse (
 )
 
 internal data class ItemDetailResponse (
-    val items: JsonObject
+    val item: JsonObject
 )

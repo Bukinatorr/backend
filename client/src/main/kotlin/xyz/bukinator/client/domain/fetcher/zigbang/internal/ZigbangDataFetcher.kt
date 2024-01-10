@@ -12,7 +12,7 @@ internal open class ZigbangDataFetcher {
                 .builder()
                 .codecs {
                     run {
-                        it.defaultCodecs().maxInMemorySize(-1)
+                        it.defaultCodecs().maxInMemorySize(10 * 1024 * 1024)
                     }
                 }
                 .build()
