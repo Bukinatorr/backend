@@ -13,19 +13,24 @@ import xyz.bukinator.common.BaseEntity
 import xyz.bukinator.common.converter.StringToListConverter
 import xyz.bukinator.house.dto.CreateHouseDto
 import xyz.bukinator.house.dto.UpdateHouseDto
-import xyz.bukinator.house.model.embeddable.*
+import xyz.bukinator.house.model.embeddable.Address
+import xyz.bukinator.house.model.embeddable.Area
+import xyz.bukinator.house.model.embeddable.Floor
+import xyz.bukinator.house.model.embeddable.Location
+import xyz.bukinator.house.model.embeddable.Origin
+import xyz.bukinator.house.model.embeddable.Price
 import xyz.bukinator.house.model.enumerate.HouseStatus
 import java.time.LocalDate
 import java.util.UUID
 
 @Entity
 @Table(name = "house")
-data class House(
+class House(
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
-    var id: UUID? = null,
+    val id: UUID = UUID.randomUUID(),
 
     @Embedded
     @Comment("데이터 원천 메타 정보")
@@ -82,7 +87,7 @@ data class House(
 
     @Embedded
     @Comment("위치 정보")
-    var location: Location,
+    val location: Location,
 
     @Column(name = "parking_count")
     @Comment("주차 대수")
@@ -94,7 +99,7 @@ data class House(
 
     @Column(name = "movin_date")
     @Comment("입주일")
-    var movinDate: LocalDate?,
+    var movinDate: LocalDate,
 
     @Column(name = "approve_date")
     @Comment("승인일")
@@ -119,8 +124,8 @@ data class House(
 
     @Embedded
     @Comment("주소 정보")
-    var address: Address,
-) : BaseEntity<Long>() {
+    val address: Address,
+) : BaseEntity<UUID>() {
     companion object {
         fun create(dto: CreateHouseDto): House {
             return House(
@@ -151,7 +156,7 @@ data class House(
         }
     }
 
-    internal fun modify(dto: UpdateHouseDto) {
+    internal fun modify(dto: UpdateHouseDto): House {
         this.origin.originUpdatedAt = dto.originUpdatedAt ?: this.origin.originUpdatedAt
         this.houseName = dto.houseName
         this.thumbnail = dto.thumbnail
@@ -164,5 +169,7 @@ data class House(
         this.movinDate = dto.movinDate
         this.pnu = dto.pnu
         this.options = dto.options
+
+        return this
     }
 }

@@ -22,8 +22,8 @@ class ZigbangOfficetelDataFetcher : ExternalDataFetcher {
         return ExternalDataSummary(ExternalDataSource.ZIGBANG_OFFICETEL, itemSummaies)
     }
 
-    override fun fetchItemDetail(itemId : Long): ExternalDataDetail {
-        val itemDetail = zigbangDataFetcher.fetchItemDetail(itemId)?.items ?: throw Exception("fetchItemDetail failed")
+    override fun fetchItemDetail(itemId: Long): ExternalDataDetail {
+        val itemDetail = zigbangDataFetcher.fetchItemDetail(itemId)?.item ?: throw Exception("fetchItemDetail failed")
         return ExternalDataDetail(ExternalDataSource.ZIGBANG_OFFICETEL, itemDetail)
     }
 }

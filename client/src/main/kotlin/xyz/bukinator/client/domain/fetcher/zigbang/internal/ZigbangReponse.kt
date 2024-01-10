@@ -2,7 +2,7 @@ package xyz.bukinator.client.domain.fetcher.zigbang.internal
 
 import com.google.gson.JsonObject
 
-internal data class OneroomItemIdResponse (
+internal data class OneroomItemIdResponse(
     val items: List<Item>,
 ) {
     data class Item(
@@ -13,7 +13,7 @@ internal data class OneroomItemIdResponse (
     )
 }
 
-internal data class OfficetelItemIdResponse (
+internal data class OfficetelItemIdResponse(
     val items: List<Item>,
 ) {
     data class Item(
@@ -23,10 +23,10 @@ internal data class OfficetelItemIdResponse (
     )
 }
 
-internal data class ItemListResponse (
-    val items: List<JsonObject>
+internal data class ItemListResponse(
+    val items: List<JsonObject>,
 )
 
-internal data class ItemDetailResponse (
-    val items: JsonObject
+internal data class ItemDetailResponse(
+    val item: JsonObject,
 )

@@ -90,7 +90,6 @@ project(":batch") {
 project(":client") {
     dependencies {
         implementation(project(":util"))
-        implementation("org.springframework.boot:spring-boot-starter-web")
         implementation("org.springframework.boot:spring-boot-starter-webflux")
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import xyz.bukinator.house.model.House
 import xyz.bukinator.house.model.embeddable.Floor
-import xyz.bukinator.house.model.embeddable.LatLng
+import xyz.bukinator.house.model.embeddable.Location
 import xyz.bukinator.house.repository.HouseRepository
 import xyz.bukinator.house.service.dto.HouseQueryCriteria
 
@@ -78,10 +78,10 @@ class HouseQueryService(
             criteria.screenLocation?.let {
                 predicates.add(
                     criteriaBuilder.and(
-                        criteriaBuilder.greaterThanOrEqualTo(root.get<LatLng>("location").get("lat"), it.northWest.lat),
-                        criteriaBuilder.lessThanOrEqualTo(root.get<LatLng>("location").get("lat"), it.southEast.lat),
-                        criteriaBuilder.greaterThanOrEqualTo(root.get<LatLng>("location").get("lng"), it.northWest.lng),
-                        criteriaBuilder.lessThanOrEqualTo(root.get<LatLng>("location").get("lng"), it.southEast.lng)
+                        criteriaBuilder.greaterThanOrEqualTo(root.get<Location>("location").get<Double>("lat"), it.northWest.lat),
+                        criteriaBuilder.lessThanOrEqualTo(root.get<Location>("location").get<Double>("lat"), it.southEast.lat),
+                        criteriaBuilder.greaterThanOrEqualTo(root.get<Location>("location").get<Double>("lng"), it.northWest.lng),
+                        criteriaBuilder.lessThanOrEqualTo(root.get<Location>("location").get<Double>("lng"), it.southEast.lng)
                     )
                 )
             }
