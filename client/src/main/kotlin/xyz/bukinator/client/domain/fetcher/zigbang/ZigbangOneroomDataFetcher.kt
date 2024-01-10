@@ -23,7 +23,7 @@ class ZigbangOneroomDataFetcher : ExternalDataFetcher {
     }
 
     override fun fetchItemDetail(itemId: Long): ExternalDataDetail {
-        val itemDetail = zigbangDataFetcher.fetchItemDetail(itemId)?.items ?: throw Exception("fetchItemDetail failed")
+        val itemDetail = zigbangDataFetcher.fetchItemDetail(itemId)?.item ?: throw Exception("fetchItemDetail failed")
         return ExternalDataDetail(ExternalDataSource.ZIGBANG_ONEROOM, itemDetail)
     }
 }

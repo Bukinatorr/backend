@@ -15,14 +15,6 @@ java {
     sourceCompatibility = JavaVersion.VERSION_17
 }
 
-tasks.bootJar {
-    enabled = false
-}
-
-tasks.jar {
-    enabled = true
-}
-
 allprojects {
     group = "xyz.bukinator"
     version = "0.0.1-SNAPSHOT"
