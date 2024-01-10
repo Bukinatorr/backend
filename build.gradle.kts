@@ -4,6 +4,7 @@ plugins {
     id("org.springframework.boot") version "3.2.0"
     id("io.spring.dependency-management") version "1.1.4"
     id("org.jetbrains.kotlin.plugin.allopen") version "1.9.21"
+    id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
     kotlin("jvm") version "1.9.20"
 
     kotlin("plugin.spring") version "1.9.20" apply false
@@ -55,6 +56,12 @@ subprojects {
     apply(plugin = "kotlin")
     apply(plugin = "kotlin-spring")
     apply(plugin = "kotlin-jpa")
+    apply(plugin = "org.jlleitschuh.gradle.ktlint") // Version should be inherited from parent
+
+    repositories {
+        // Required to download KtLint
+        mavenCentral()
+    }
 
     dependencies {
         implementation("org.springframework.boot:spring-boot-starter")
@@ -63,12 +70,9 @@ subprojects {
 
         implementation("com.google.code.gson:gson")
     }
-}
 
-project(":api") {
-    dependencies {
-        implementation(project(":house"))
-        implementation(project(":util"))
+    configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+        debug.set(true)
     }
 }
 
@@ -76,18 +80,6 @@ project(":batch") {
     dependencies {
         implementation(project(":house"))
         implementation(project(":util"))
-    }
-}
-
-project(":house") {
-    dependencies {
-        implementation(project(":client"))
-        implementation(project(":util"))
-        implementation("mysql:mysql-connector-java:8.0.23")
-        implementation("org.springframework.boot:spring-boot-starter-web")
-        implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-        testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
-        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
     }
 }
 
