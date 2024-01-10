@@ -20,7 +20,7 @@ internal open class ZigbangDataFetcher {
         .baseUrl(baseUrl)
         .build()
 
-    fun fetchOneroomItemIds(geoHash: String) : OneroomItemIdResponse? {
+    fun fetchOneroomItemIds(geoHash: String): OneroomItemIdResponse? {
         return try {
             client
                 .get()
@@ -39,7 +39,7 @@ internal open class ZigbangDataFetcher {
         }
     }
 
-    fun fetchOfficetelItemIds(geoHash: String) : OfficetelItemIdResponse? {
+    fun fetchOfficetelItemIds(geoHash: String): OfficetelItemIdResponse? {
         return try {
             client
                 .get()
@@ -59,15 +59,17 @@ internal open class ZigbangDataFetcher {
         }
     }
 
-    fun fetchItemList(itemIds: List<Long>) : ItemListResponse? {
+    fun fetchItemList(itemIds: List<Long>): ItemListResponse? {
         return try {
             client
                 .post()
                 .uri("/v2/items/list")
-                .bodyValue(mapOf(
-                    "domain" to "zigbang",
-                    "item_ids" to itemIds,
-                ))
+                .bodyValue(
+                    mapOf(
+                        "domain" to "zigbang",
+                        "item_ids" to itemIds
+                    )
+                )
                 .retrieve()
                 .bodyToMono(ItemListResponse::class.java)
                 .block()
@@ -76,7 +78,7 @@ internal open class ZigbangDataFetcher {
         }
     }
 
-    fun fetchItemDetail(itemId: Long) : ItemDetailResponse? {
+    fun fetchItemDetail(itemId: Long): ItemDetailResponse? {
         return try {
             client
                 .get()
