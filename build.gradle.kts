@@ -59,6 +59,8 @@ subprojects {
         implementation("org.springframework.boot:spring-boot-starter")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+        implementation("com.google.code.gson:gson")
     }
 
     configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
@@ -76,6 +78,7 @@ project(":batch") {
 project(":client") {
     dependencies {
         implementation(project(":util"))
+        implementation("org.springframework.boot:spring-boot-starter-webflux")
     }
 }
 
