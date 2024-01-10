@@ -10,20 +10,15 @@ import xyz.bukinator.client.domain.model.ExternalDataSummary
 
 @Component
 @StepScope
-class OriginHouseDataReader : ItemReader<Any> {
-    override fun read(): List<ExternalDataSummary> {
+class OriginHouseDataReader : ItemReader<ExternalDataSummary> {
+    override fun read(): ExternalDataSummary {
         return fetchZigbangItemSummaries()
     }
 
-    private fun fetchZigbangItemSummaries(): List<ExternalDataSummary> {
+    private fun fetchZigbangItemSummaries(): ExternalDataSummary {
         val zigbangOneroomDataFetcher = ExternalDataFetcherFactory.createFetcher(ExternalDataSource.ZIGBANG_ONEROOM)
-
-        val summaries = FETCHABLE_GEOHASH.map { it ->
-            val itemIds = zigbangOneroomDataFetcher.fetchItemIds(it)
-            zigbangOneroomDataFetcher.fetchItemSummaries(itemIds)
-        }
-
-        return summaries
+        val itemIds = zigbangOneroomDataFetcher.fetchItemIds(FETCHABLE_GEOHASH)
+        return zigbangOneroomDataFetcher.fetchItemSummaries(itemIds)
     }
 
     private fun fetchZigbangItemDetail(itemId: Long): ExternalDataDetail {
@@ -32,7 +27,7 @@ class OriginHouseDataReader : ItemReader<Any> {
     }
 
     companion object {
-        val FETCHABLE_GEOHASH = listOf<String>("wydm")
+        const val FETCHABLE_GEOHASH = "wydm"
     }
 }
 

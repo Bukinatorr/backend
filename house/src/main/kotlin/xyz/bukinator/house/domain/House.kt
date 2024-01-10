@@ -88,11 +88,11 @@ data class House(
 
     @Column(name = "movin_date")
     @Comment("입주일")
-    var movinDate: LocalDate,
+    var movinDate: LocalDate?,
 
     @Column(name = "approve_date")
     @Comment("승인일")
-    val approveDate: LocalDate,
+    val approveDate: LocalDate?,
 
     @Column(name = "residence_type")
     @Comment("주거 형태")

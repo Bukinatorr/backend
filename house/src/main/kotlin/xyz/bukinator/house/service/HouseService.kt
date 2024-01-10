@@ -1,5 +1,6 @@
 package xyz.bukinator.house.service
 
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import xyz.bukinator.house.domain.House
