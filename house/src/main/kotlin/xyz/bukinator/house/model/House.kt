@@ -1,25 +1,35 @@
-package xyz.bukinator.house.domain
+package xyz.bukinator.house.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.Comment
+import org.hibernate.annotations.GenericGenerator
+import xyz.bukinator.common.BaseEntity
 import xyz.bukinator.house.dto.CreateHouseDto
 import xyz.bukinator.house.dto.UpdateHouseDto
+import xyz.bukinator.common.converter.StringToListConverter
+import xyz.bukinator.house.model.embeddable.Address
+import xyz.bukinator.house.model.embeddable.Area
+import xyz.bukinator.house.model.embeddable.Floor
+import xyz.bukinator.house.model.embeddable.Location
+import xyz.bukinator.house.model.embeddable.Origin
+import xyz.bukinator.house.model.embeddable.Price
+import xyz.bukinator.house.model.enumerate.HouseStatus
 import java.time.LocalDate
+import java.util.UUID
 
 @Entity
 @Table(name = "house")
-data class House(
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+class House(
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(columnDefinition = "BINARY(16)")
+    val id: UUID = UUID.randomUUID(),
 
     @Embedded
     @Comment("데이터 원천 메타 정보")
@@ -114,7 +124,7 @@ data class House(
     @Embedded
     @Comment("주소 정보")
     val address: Address,
-) : BaseEntity<Long>() {
+) : BaseEntity<UUID>() {
     companion object {
         fun create(dto: CreateHouseDto): House {
             return House(
