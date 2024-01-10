@@ -10,18 +10,18 @@ import xyz.bukinator.common.converter.StringToListConverter
 class Price(
     @Column(name = "price_deposit", nullable = false)
     @Comment("보증금")
-    val priceDeposit: Int,
+    var priceDeposit: Int,
 
     @Column(name = "price_rent", nullable = false)
     @Comment("월세")
-    val priceRent: Int,
+    var priceRent: Int,
 
     @Column(name = "price_manage", nullable = false)
     @Comment("관리세")
-    val priceManage: Int,
+    var priceManage: Int,
 
     @Column(name = "price_manage_includes")
     @Convert(converter = StringToListConverter::class)
     @Comment("관리비 포함 항목")
-    val priceManageIncludes: List<String>?,
+    var priceManageIncludes: List<String>?,
 )

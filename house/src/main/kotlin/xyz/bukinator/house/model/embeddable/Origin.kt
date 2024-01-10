@@ -16,5 +16,5 @@ class Origin(
 
     @Column(name = "origin_updated_at")
     @Comment("데이터 출처 update_at 정보")
-    val originUpdatedAt: LocalDateTime?,
+    var originUpdatedAt: LocalDateTime?,
 )

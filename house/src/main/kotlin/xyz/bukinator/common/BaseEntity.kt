@@ -11,8 +11,6 @@ import java.time.LocalDateTime
 
 @MappedSuperclass
 abstract class BaseEntity<ID : Serializable?> {
-    abstract val id: ID
-
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable = false)

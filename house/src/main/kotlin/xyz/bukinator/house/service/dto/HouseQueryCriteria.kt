@@ -1,6 +1,6 @@
 package xyz.bukinator.house.service.dto
 
-import xyz.bukinator.house.model.embeddable.LatLng
+import xyz.bukinator.house.model.embeddable.Location
 import java.time.LocalDate
 
 data class HouseQueryCriteria(
@@ -15,8 +15,8 @@ data class HouseQueryCriteria(
     val parkingCount: Int? = null,
 ) {
     data class ScreenLocation(
-        val northWest: LatLng,
-        val southEast: LatLng,
+        val northWest: Location,
+        val southEast: Location,
     )
 
     data class Deposit(
