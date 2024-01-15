@@ -2,6 +2,8 @@ package xyz.bukinator.client.domain.fetcher.zigbang.internal
 
 import org.springframework.web.reactive.function.client.ExchangeStrategies
 import org.springframework.web.reactive.function.client.WebClient
+import xyz.bukinator.client.domain.model.ExternalDataDetail
+import xyz.bukinator.client.domain.model.ExternalDataSummary
 
 internal open class ZigbangDataFetcher {
     private val baseUrl = "https://apis.zigbang.com"
@@ -20,22 +22,21 @@ internal open class ZigbangDataFetcher {
         .baseUrl(baseUrl)
         .build()
 
-    fun fetchOneroomItemIds(geoHash: String): OneroomItemIdResponse? {
+    fun fetchOneroomItemIds(geoHash: String): ZigbangOneroomItemIdResponse? {
         return client
             .get()
             .uri {
                 it.path("/v2/items/oneroom")
                     .queryParam("domain", "zigbang")
-                    .queryParam("checkAnyItemWithoutFilter", true)
                     .queryParam("geohash", geoHash)
                     .build()
             }
             .retrieve()
-            .bodyToMono(OneroomItemIdResponse::class.java)
+            .bodyToMono(ZigbangOneroomItemIdResponse::class.java)
             .block()
     }
 
-    fun fetchOfficetelItemIds(geoHash: String): OfficetelItemIdResponse? {
+    fun fetchOfficetelItemIds(geoHash: String): ZigbangOfficetelItemIdResponse? {
         return client
             .get()
             .uri {
@@ -47,11 +48,11 @@ internal open class ZigbangDataFetcher {
                     .build()
             }
             .retrieve()
-            .bodyToMono(OfficetelItemIdResponse::class.java)
+            .bodyToMono(ZigbangOfficetelItemIdResponse::class.java)
             .block()
     }
 
-    fun fetchItemList(itemIds: List<Long>): ItemListResponse? {
+    fun fetchOneroomItemList(itemIds: List<Long>): ExternalDataSummary? {
         return client
             .post()
             .uri("/v2/items/list")
@@ -62,11 +63,26 @@ internal open class ZigbangDataFetcher {
                 )
             )
             .retrieve()
-            .bodyToMono(ItemListResponse::class.java)
+            .bodyToMono(ZigbangOneroomItemListResponse::class.java)
             .block()
     }
 
-    fun fetchItemDetail(itemId: Long): ItemDetailResponse? {
+    fun fetchOfficetelItemList(itemIds: List<Long>): ExternalDataSummary? {
+        return client
+            .post()
+            .uri("/v2/items/list")
+            .bodyValue(
+                mapOf(
+                    "domain" to "zigbang",
+                    "item_ids" to itemIds
+                )
+            )
+            .retrieve()
+            .bodyToMono(ZigbangOfficetelItemListResponse::class.java)
+            .block()
+    }
+
+    fun fetchOneroomItemDetail(itemId: Long): ExternalDataDetail? {
         return client
             .get()
             .uri {
@@ -75,7 +91,20 @@ internal open class ZigbangDataFetcher {
                     .build()
             }
             .retrieve()
-            .bodyToMono(ItemDetailResponse::class.java)
+            .bodyToMono(ZigbangOnreoomItemDetailResponse::class.java)
+            .block()
+    }
+
+    fun fetchOfficetelItemDetail(itemId: Long): ExternalDataDetail? {
+        return client
+            .get()
+            .uri {
+                it.path("/v3/items/$itemId")
+                    .queryParam("domain", "zigbang")
+                    .build()
+            }
+            .retrieve()
+            .bodyToMono(ZigbangOfficetelItemDetailResponse::class.java)
             .block()
     }
 }

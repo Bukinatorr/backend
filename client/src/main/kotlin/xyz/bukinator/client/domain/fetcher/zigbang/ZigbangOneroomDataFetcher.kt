@@ -2,8 +2,9 @@ package xyz.bukinator.client.domain.fetcher.zigbang
 
 import xyz.bukinator.client.domain.fetcher.ExternalDataFetcher
 import xyz.bukinator.client.domain.fetcher.zigbang.internal.ZigbangDataFetcher
+import xyz.bukinator.client.domain.fetcher.zigbang.internal.ZigbangOneroomItemListResponse
+import xyz.bukinator.client.domain.fetcher.zigbang.internal.ZigbangOnreoomItemDetailResponse
 import xyz.bukinator.client.domain.model.ExternalDataDetail
-import xyz.bukinator.client.domain.model.ExternalDataSource
 import xyz.bukinator.client.domain.model.ExternalDataSummary
 
 class ZigbangOneroomDataFetcher : ExternalDataFetcher {
@@ -18,12 +19,10 @@ class ZigbangOneroomDataFetcher : ExternalDataFetcher {
     }
 
     override fun fetchItemSummaries(itemIds: List<Long>): ExternalDataSummary {
-        val itemSummaies = zigbangDataFetcher.fetchItemList(itemIds)?.items ?: throw Exception("fetchItemSummaries failed")
-        return ExternalDataSummary(ExternalDataSource.ZIGBANG_ONEROOM, itemSummaies)
+        return zigbangDataFetcher.fetchOneroomItemList(itemIds) as ZigbangOneroomItemListResponse
     }
 
     override fun fetchItemDetail(itemId: Long): ExternalDataDetail {
-        val itemDetail = zigbangDataFetcher.fetchItemDetail(itemId)?.item ?: throw Exception("fetchItemDetail failed")
-        return ExternalDataDetail(ExternalDataSource.ZIGBANG_ONEROOM, itemDetail)
+        return  zigbangDataFetcher.fetchOfficetelItemDetail(itemId) as ZigbangOnreoomItemDetailResponse
     }
 }
