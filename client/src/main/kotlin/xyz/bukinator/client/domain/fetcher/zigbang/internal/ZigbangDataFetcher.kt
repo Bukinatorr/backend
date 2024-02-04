@@ -29,7 +29,7 @@ internal open class ZigbangDataFetcher {
         .baseUrl(baseUrl)
         .build()
 
-    fun fetchOneroomItemIds(geoHash: String): ZigbangOneroomItemIdResponse? {
+    fun fetchOneroomItemIds(geoHash: String): ZigbangOneroomItemIdResponse {
         return client
             .get()
             .uri {
@@ -40,10 +40,13 @@ internal open class ZigbangDataFetcher {
             }
             .retrieve()
             .bodyToMono(ZigbangOneroomItemIdResponse::class.java)
-            .block()
+            .onErrorResume { e ->
+                throw RuntimeException("Failed to fetch data", e)
+            }
+            .block() ?: throw RuntimeException("fetched data is null")
     }
 
-    fun fetchOfficetelItemIds(geoHash: String): ZigbangOfficetelItemIdResponse? {
+    fun fetchOfficetelItemIds(geoHash: String): ZigbangOfficetelItemIdResponse {
         return client
             .get()
             .uri {
@@ -54,10 +57,21 @@ internal open class ZigbangDataFetcher {
             }
             .retrieve()
             .bodyToMono(ZigbangOfficetelItemIdResponse::class.java)
-            .block()
+            .onErrorResume { e ->
+                throw RuntimeException("Failed to fetch data", e)
+            }
+            .block() ?: throw RuntimeException("fetched data is null")
     }
 
-    fun fetchOneroomItemList(itemIds: List<Long>): ZigbangItemSummaryResponse? {
+    fun fetchOneroomItemList(itemIds: List<Long>): ZigbangItemSummaryResponse {
+        return fetchItemList(itemIds)
+    }
+
+    fun fetchOfficetelItemList(itemIds: List<Long>): ZigbangItemSummaryResponse {
+        return fetchItemList(itemIds)
+    }
+
+    private fun fetchItemList(itemIds: List<Long>): ZigbangItemSummaryResponse {
         return client
             .post()
             .uri("/v2/items/list")
@@ -69,25 +83,21 @@ internal open class ZigbangDataFetcher {
             )
             .retrieve()
             .bodyToMono(ZigbangItemSummaryResponse::class.java)
-            .block()
+            .onErrorResume { e ->
+                throw RuntimeException("Failed to fetch data", e)
+            }
+            .block() ?: throw RuntimeException("fetched data is null")
     }
 
-    fun fetchOfficetelItemList(itemIds: List<Long>): ZigbangItemSummaryResponse? {
-        return client
-            .post()
-            .uri("/v2/items/list")
-            .bodyValue(
-                mapOf(
-                    "domain" to "zigbang",
-                    "item_ids" to itemIds
-                )
-            )
-            .retrieve()
-            .bodyToMono(ZigbangItemSummaryResponse::class.java)
-            .block()
+    fun fetchOneroomItemDetail(itemId: Long): JsonNode {
+        return fetchItemDetail(itemId)
     }
 
-    fun fetchOneroomItemDetail(itemId: Long): JsonNode? {
+    fun fetchOfficetelItemDetail(itemId: Long): JsonNode {
+        return fetchItemDetail(itemId)
+    }
+
+    private fun fetchItemDetail(itemId: Long): JsonNode {
         return client
             .get()
             .uri {
@@ -97,19 +107,9 @@ internal open class ZigbangDataFetcher {
             }
             .retrieve()
             .bodyToMono(JsonNode::class.java)
-            .block()
-    }
-
-    fun fetchOfficetelItemDetail(itemId: Long): JsonNode? {
-        return client
-            .get()
-            .uri {
-                it.path("/v3/items/$itemId")
-                    .queryParam("domain", "zigbang")
-                    .build()
+            .onErrorResume { e ->
+                throw RuntimeException("Failed to fetch data", e)
             }
-            .retrieve()
-            .bodyToMono(JsonNode::class.java)
-            .block()
+            .block() ?: throw RuntimeException("fetched data is null")
     }
 }

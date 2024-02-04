@@ -8,7 +8,7 @@ class ZigbangOneroomDataFetcher : ExternalDataFetcher {
     private val zigbangDataFetcher = ZigbangDataFetcher()
 
     override fun fetchItemIds(geohash: String): List<Long> {
-        return zigbangDataFetcher.fetchOneroomItemIds(geohash)?.items?.map { it.itemId } ?: throw Exception("fetchItemIds failed")
+        return zigbangDataFetcher.fetchOneroomItemIds(geohash).items.map { it.itemId }
     }
 
     override fun fetchItemIds(lat: Long, lng: Long): List<Long> {
@@ -16,10 +16,10 @@ class ZigbangOneroomDataFetcher : ExternalDataFetcher {
     }
 
     override fun fetchItemSummaries(itemIds: List<Long>): List<JsonNode> {
-        return zigbangDataFetcher.fetchOneroomItemList(itemIds)?.items ?: throw Exception("fetchItemSummaries failed")
+        return zigbangDataFetcher.fetchOneroomItemList(itemIds).items
     }
 
     override fun fetchItemDetail(itemId: Long): JsonNode {
-        return  zigbangDataFetcher.fetchOneroomItemDetail(itemId) ?: throw Exception("fetchItemDetail failed")
+        return  zigbangDataFetcher.fetchOneroomItemDetail(itemId)
     }
 }

@@ -8,7 +8,7 @@ class ZigbangOfficetelDataFetcher : ExternalDataFetcher {
     private val zigbangDataFetcher = ZigbangDataFetcher()
 
     override fun fetchItemIds(geohash: String): List<Long> {
-        return zigbangDataFetcher.fetchOfficetelItemIds(geohash)?.items?.map { it.itemId } ?: throw Exception("fetchItemIds failed")
+        return zigbangDataFetcher.fetchOfficetelItemIds(geohash).items.map { it.itemId }
     }
 
     override fun fetchItemIds(lat: Long, lng: Long): List<Long> {
@@ -16,10 +16,10 @@ class ZigbangOfficetelDataFetcher : ExternalDataFetcher {
     }
 
     override fun fetchItemSummaries(itemIds: List<Long>): List<JsonNode> {
-        return zigbangDataFetcher.fetchOfficetelItemList(itemIds)?.items ?: throw Exception("fetchItemSummaries failed")
+        return zigbangDataFetcher.fetchOfficetelItemList(itemIds).items
     }
 
     override fun fetchItemDetail(itemId: Long): JsonNode {
-        return  zigbangDataFetcher.fetchOfficetelItemDetail(itemId) ?: throw Exception("fetchItemDetail failed")
+        return  zigbangDataFetcher.fetchOfficetelItemDetail(itemId)
     }
 }
