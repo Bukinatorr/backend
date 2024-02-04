@@ -1,20 +1,27 @@
 package xyz.bukinator.client.domain.fetcher.zigbang.internal
 
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.springframework.http.codec.json.Jackson2JsonDecoder
+import org.springframework.http.codec.json.Jackson2JsonEncoder
 import org.springframework.web.reactive.function.client.ExchangeStrategies
 import org.springframework.web.reactive.function.client.WebClient
-import xyz.bukinator.client.domain.model.ExternalDataDetail
-import xyz.bukinator.client.domain.model.ExternalDataSummary
 
 internal open class ZigbangDataFetcher {
     private val baseUrl = "https://apis.zigbang.com"
-    private val client = WebClient
-        .builder()
+    private val objectMapper = ObjectMapper().apply {
+        configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+    }
+    private val client = WebClient.builder()
         .exchangeStrategies(
             ExchangeStrategies
                 .builder()
-                .codecs {
+                .codecs {configurer ->
                     run {
-                        it.defaultCodecs().maxInMemorySize(10 * 1024 * 1024)
+                        configurer.defaultCodecs().maxInMemorySize(10 * 1024 * 1024)
+                        configurer.defaultCodecs().jackson2JsonEncoder(Jackson2JsonEncoder(objectMapper))
+                        configurer.defaultCodecs().jackson2JsonDecoder(Jackson2JsonDecoder(objectMapper))
                     }
                 }
                 .build()
@@ -42,8 +49,6 @@ internal open class ZigbangDataFetcher {
             .uri {
                 it.path("/v2/items/officetel")
                     .queryParam("domain", "zigbang")
-                    .queryParam("checkAnyItemWithoutFilter", true)
-                    .queryParam("withBuildings", true)
                     .queryParam("geohash", geoHash)
                     .build()
             }
@@ -52,7 +57,7 @@ internal open class ZigbangDataFetcher {
             .block()
     }
 
-    fun fetchOneroomItemList(itemIds: List<Long>): ExternalDataSummary? {
+    fun fetchOneroomItemList(itemIds: List<Long>): ZigbangItemSummaryResponse? {
         return client
             .post()
             .uri("/v2/items/list")
@@ -63,11 +68,11 @@ internal open class ZigbangDataFetcher {
                 )
             )
             .retrieve()
-            .bodyToMono(ZigbangOneroomItemListResponse::class.java)
+            .bodyToMono(ZigbangItemSummaryResponse::class.java)
             .block()
     }
 
-    fun fetchOfficetelItemList(itemIds: List<Long>): ExternalDataSummary? {
+    fun fetchOfficetelItemList(itemIds: List<Long>): ZigbangItemSummaryResponse? {
         return client
             .post()
             .uri("/v2/items/list")
@@ -78,11 +83,11 @@ internal open class ZigbangDataFetcher {
                 )
             )
             .retrieve()
-            .bodyToMono(ZigbangOfficetelItemListResponse::class.java)
+            .bodyToMono(ZigbangItemSummaryResponse::class.java)
             .block()
     }
 
-    fun fetchOneroomItemDetail(itemId: Long): ExternalDataDetail? {
+    fun fetchOneroomItemDetail(itemId: Long): JsonNode? {
         return client
             .get()
             .uri {
@@ -91,11 +96,11 @@ internal open class ZigbangDataFetcher {
                     .build()
             }
             .retrieve()
-            .bodyToMono(ZigbangOnreoomItemDetailResponse::class.java)
+            .bodyToMono(JsonNode::class.java)
             .block()
     }
 
-    fun fetchOfficetelItemDetail(itemId: Long): ExternalDataDetail? {
+    fun fetchOfficetelItemDetail(itemId: Long): JsonNode? {
         return client
             .get()
             .uri {
@@ -104,7 +109,7 @@ internal open class ZigbangDataFetcher {
                     .build()
             }
             .retrieve()
-            .bodyToMono(ZigbangOfficetelItemDetailResponse::class.java)
+            .bodyToMono(JsonNode::class.java)
             .block()
     }
 }

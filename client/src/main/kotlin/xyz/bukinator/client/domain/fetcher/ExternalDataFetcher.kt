@@ -1,11 +1,10 @@
 package xyz.bukinator.client.domain.fetcher
 
-import xyz.bukinator.client.domain.model.ExternalDataDetail
-import xyz.bukinator.client.domain.model.ExternalDataSummary
+import com.fasterxml.jackson.databind.JsonNode
 
 interface ExternalDataFetcher {
     fun fetchItemIds(geohash: String): List<Long>
     fun fetchItemIds(lat: Long, lng: Long): List<Long>
-    fun fetchItemSummaries(itemIds: List<Long>): ExternalDataSummary
-    fun fetchItemDetail(itemId: Long): ExternalDataDetail
+    fun fetchItemSummaries(itemIds: List<Long>): List<JsonNode>
+    fun fetchItemDetail(itemId: Long): JsonNode
 }
