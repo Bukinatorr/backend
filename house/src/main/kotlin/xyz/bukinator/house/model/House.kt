@@ -11,8 +11,7 @@ import org.hibernate.annotations.Comment
 import org.hibernate.annotations.GenericGenerator
 import xyz.bukinator.common.BaseEntity
 import xyz.bukinator.common.converter.StringToListConverter
-import xyz.bukinator.house.dto.CreateHouseDto
-import xyz.bukinator.house.dto.UpdateHouseDto
+import xyz.bukinator.house.dto.HouseDto
 import xyz.bukinator.house.model.embeddable.Address
 import xyz.bukinator.house.model.embeddable.Area
 import xyz.bukinator.house.model.embeddable.Floor
@@ -127,9 +126,13 @@ class House(
     val address: Address,
 ) : BaseEntity<UUID>() {
     companion object {
-        fun create(dto: CreateHouseDto): House {
+        fun create(dto: HouseDto): House {
             return House(
-                origin = Origin(dto.originId, dto.originSource, dto.originUpdatedAt),
+                origin = Origin(
+                    originId = dto.originId,
+                    originSource = dto.originSource,
+                    originUpdatedAt = dto.originUpdatedAt
+                ),
                 salesType = dto.salesType,
                 houseName = dto.houseName,
                 houseType = dto.houseType,
@@ -156,7 +159,7 @@ class House(
         }
     }
 
-    internal fun modify(dto: UpdateHouseDto): House {
+    internal fun modify(dto: HouseDto): House {
         this.origin.originUpdatedAt = dto.originUpdatedAt ?: this.origin.originUpdatedAt
         this.houseName = dto.houseName
         this.thumbnail = dto.thumbnail

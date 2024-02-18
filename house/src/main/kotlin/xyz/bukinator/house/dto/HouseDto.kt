@@ -1,0 +1,90 @@
+package xyz.bukinator.house.dto
+
+import com.fasterxml.jackson.databind.JsonNode
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.*
+
+data class HouseDto(
+    val id: UUID,
+    val originSource: String,
+    val originId: String,
+    val originUpdatedAt: LocalDateTime? = null,
+    val salesType: String,
+    val houseName: String,
+    val houseType: String,
+    val roomType: String,
+    val roomDirection: String,
+    val thumbnail: String,
+    val images: List<String>,
+    val priceDeposit: Int,
+    val priceRent: Int,
+    val priceManage: Int,
+    val priceManageIncludes: List<String>? = null,
+    val areaContract: Double?,
+    val areaSupply: Double?,
+    val areaIndividual: Double?,
+    val title: String,
+    val description: String,
+    val status: String,
+    val lat: Double,
+    val lng: Double,
+    val parkingCount: Int,
+    val elevator: Boolean,
+    val movinDate: LocalDate,
+    val approveDate: LocalDate,
+    val residenceType: String,
+    val pnu: String,
+    val floorTotal: Int,
+    val floorTarget: Int,
+    val options: List<String>,
+    val addressLocal1: String,
+    val addressLocal2: String,
+    val addressLocal3: String,
+    val addressLocal4: String,
+    val addressJibun: String,
+) {
+    companion object {
+        fun of(origin: JsonNode): HouseDto {
+            return HouseDto(
+                id = UUID.randomUUID(),
+                originSource = "ZIGBANG",
+                originId = origin.get("item_id").asText(),
+                salesType = origin.get("sales_type").asText(),
+                houseName = origin.get("sales_title").asText(),
+                houseType = origin.get("service_type").asText(),
+                roomType = origin.get("room_type").asText(),
+                roomDirection = "",
+                thumbnail = origin.get("images_thumbnail").asText(),
+                images = listOf(),
+                priceDeposit = origin.get("deposit").asInt(),
+                priceRent = origin.get("rent").asInt(),
+                priceManage = origin.get("manage_cost").asInt(),
+                priceManageIncludes = listOf(),
+                areaContract = origin.get("size_m2").asDouble(),
+                areaSupply = origin.get("공급면적").get("m2").asDouble(),
+                areaIndividual = origin.get("전용면적").get("m2").asDouble(),
+                title = origin.get("title").asText(),
+                description = "",
+                status = if (origin.get("status").asBoolean()) "ACTIVE" else "INACTIVE",
+                lat = origin.get("random_location").get("lat").asDouble(),
+                lng = origin.get("random_location").get("lng").asDouble(),
+                parkingCount = 0,
+                elevator = false,
+                movinDate = LocalDate.parse(origin.get("reg_date").asText().substring(0, 10)),
+                approveDate = LocalDate.parse(origin.get("reg_date").asText().substring(0, 10)),
+                residenceType = "",
+                pnu = "",
+                floorTotal = origin.get("building_floor").asInt(),
+                floorTarget = origin.get("floor").asInt(),
+                options = listOf(),
+                addressLocal1 = origin.get("addressOrigin").get("local1").asText(),
+                addressLocal2 = origin.get("addressOrigin").get("local2").asText(),
+                addressLocal3 = origin.get("addressOrigin").get("local3").asText(),
+                addressLocal4 = origin.get("addressOrigin").get("local4").asText(),
+                addressJibun = "",
+            )
+        }
+    }
+}
+
