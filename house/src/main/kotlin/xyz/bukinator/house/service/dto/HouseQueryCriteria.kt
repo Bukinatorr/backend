@@ -14,7 +14,8 @@ data class HouseQueryCriteria(
     val rent: Rent? = null,
     val parkingCount: Int? = null,
     val area: RoomArea? = null,
-    val isRentAndDepositConvertible: Boolean? = null,
+    val isRentAndDepositConvertible: Boolean = false,
+    val isRentIncludesManage: Boolean = false
 ) {
     data class ScreenLocation(
         val northWest: Location,
