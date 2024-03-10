@@ -85,9 +85,8 @@ data class HouseDto(
                 addressLocal2 = origin.getAddressLocal2() ?: "",
                 addressLocal3 = origin.getAddressLocal3() ?: "",
                 addressLocal4 = origin.getAddressLocal4() ?: "",
-                addressJibun = "",
+                addressJibun = ""
             )
         }
     }
 }
-

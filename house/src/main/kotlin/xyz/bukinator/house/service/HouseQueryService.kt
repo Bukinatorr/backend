@@ -17,7 +17,6 @@ import xyz.bukinator.house.model.embeddable.Price
 import xyz.bukinator.house.repository.HouseRepository
 import xyz.bukinator.house.service.dto.HouseQueryCriteria
 
-
 @Service
 class HouseQueryService(
     private val houseRepository: HouseRepository,
