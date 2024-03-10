@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.transaction.PlatformTransactionManager
+import xyz.bukinator.client.domain.external.ExternalDataSummary
 import xyz.bukinator.house.dto.HouseDto
 import xyz.bukinator.house.service.HouseService
 import java.util.*
@@ -44,7 +45,7 @@ class OriginHouseDataCreateConfig(
     @JobScope
     fun oneRoomUpdateStep(): Step {
         return StepBuilder("oneRoomUpdateStep", jobRepository)
-            .chunk<List<JsonNode>, List<HouseDto>>(STEP_BUILDER_CHUNK_SIZE, transactionManager)
+            .chunk<List<ExternalDataSummary>, List<HouseDto>>(STEP_BUILDER_CHUNK_SIZE, transactionManager)
             .reader(originHouseDataReader)
             .processor(originHouseDataProcessor())
             .writer(oneRoomItemWriter())
@@ -53,9 +54,9 @@ class OriginHouseDataCreateConfig(
 
     @Bean
     @StepScope
-    fun originHouseDataProcessor(): ItemProcessor<List<JsonNode>, List<HouseDto>> {
-        return ItemProcessor { jsonNodes ->
-            jsonNodes.map {
+    fun originHouseDataProcessor(): ItemProcessor<List<ExternalDataSummary>, List<HouseDto>> {
+        return ItemProcessor { externalDataSummaries ->
+            externalDataSummaries.map {
                 HouseDto.of(it)
             }
         }

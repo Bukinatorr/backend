@@ -9,6 +9,9 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.Comment
 import org.hibernate.annotations.GenericGenerator
+import xyz.bukinator.client.domain.external.HouseStatus
+import xyz.bukinator.client.domain.external.HouseType
+import xyz.bukinator.client.domain.external.SalesType
 import xyz.bukinator.common.BaseEntity
 import xyz.bukinator.common.converter.StringToListConverter
 import xyz.bukinator.house.dto.HouseDto
@@ -18,7 +21,6 @@ import xyz.bukinator.house.model.embeddable.Floor
 import xyz.bukinator.house.model.embeddable.Location
 import xyz.bukinator.house.model.embeddable.Origin
 import xyz.bukinator.house.model.embeddable.Price
-import xyz.bukinator.house.model.enumerate.HouseStatus
 import java.time.LocalDate
 import java.util.UUID
 
@@ -37,7 +39,7 @@ class House(
 
     @Column(name = "sales_type", nullable = false)
     @Comment("판매 타입")
-    var salesType: String,
+    var salesType: SalesType,
 
     @Column(name = "house_name")
     @Comment("건물 이름")
@@ -45,7 +47,7 @@ class House(
 
     @Column(name = "house_type")
     @Comment("방 타입")
-    var houseType: String,
+    var houseType: HouseType,
 
     @Column(name = "room_type")
     @Comment("방 구조")
@@ -144,7 +146,7 @@ class House(
                 area = Area(dto.areaContract, dto.areaSupply, dto.areaIndividual),
                 title = dto.title,
                 description = dto.description,
-                status = HouseStatus.valueOf(dto.status),
+                status = dto.status,
                 location = Location(dto.lat, dto.lng),
                 parkingCount = dto.parkingCount,
                 elevator = dto.elevator,
@@ -168,7 +170,7 @@ class House(
         this.area = Area(dto.areaContract ?: this.area.areaContract, dto.areaSupply ?: this.area.areaSupply, dto.areaIndividual ?: this.area.areaIndividual)
         this.title = dto.title
         this.description = dto.description
-        this.status = HouseStatus.valueOf(dto.status)
+        this.status = dto.status
         this.movinDate = dto.movinDate
         this.pnu = dto.pnu
         this.options = dto.options
