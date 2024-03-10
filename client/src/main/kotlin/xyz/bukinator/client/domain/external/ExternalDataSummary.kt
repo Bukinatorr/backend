@@ -5,11 +5,11 @@ interface ExternalDataSummary {
     fun getItemId(): String
     fun getThumbnail(): String?
     fun getTitle(): String?
-    fun getStatus(): HouseStatus?
+    fun getStatus(): HouseStatus
 
     // 집 정보
-    fun getSalesType(): SalesType?
-    fun getHouseType(): String?
+    fun getSalesType(): SalesType
+    fun getHouseType(): HouseType
     fun getAreaContract(): Double?
     fun getAreaSupply(): Double?
     fun getAreaIndividual(): Double?

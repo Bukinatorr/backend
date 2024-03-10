@@ -2,6 +2,7 @@ package xyz.bukinator.client.domain.model
 
 import xyz.bukinator.client.domain.external.ExternalDataSummary
 import xyz.bukinator.client.domain.external.HouseStatus
+import xyz.bukinator.client.domain.external.HouseType
 import xyz.bukinator.client.domain.external.SalesType
 import xyz.bukinator.client.domain.fetcher.zigbang.internal.ItemSummaryResponse
 
@@ -20,24 +21,28 @@ internal class ZigbangDataDetail(
         return itemDetail.title
     }
 
-    override fun getStatus(): HouseStatus? {
+    override fun getStatus(): HouseStatus {
         return when (itemDetail.status) {
             true -> HouseStatus.OPEN
             false -> HouseStatus.CLOSE
-            else -> null
+            else -> HouseStatus.UNKNOWN
         }
     }
 
-    override fun getSalesType(): SalesType? {
+    override fun getSalesType(): SalesType {
         return when (itemDetail.salesType) {
             "월세" -> SalesType.MONTHLY
             "전세" -> SalesType.JEONSE
-            else -> null
+            else -> SalesType.UNKNOWN
         }
     }
 
-    override fun getHouseType(): String? {
-        return itemDetail.roomTypeTitle
+    override fun getHouseType(): HouseType {
+        return when (itemDetail.serviceType) {
+            "오피스텔" -> HouseType.OFFICETEL
+            "원룸" -> HouseType.ONEROOM
+            else -> HouseType.UNKNOWN
+        }
     }
 
     override fun getAreaContract(): Double? {

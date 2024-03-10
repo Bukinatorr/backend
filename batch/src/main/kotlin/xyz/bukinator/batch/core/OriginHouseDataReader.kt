@@ -3,21 +3,17 @@ package xyz.bukinator.batch.core
 import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.item.ItemReader
 import org.springframework.stereotype.Component
-import xyz.bukinator.client.domain.fetcher.ExternalDataFetcherFactory
-import xyz.bukinator.client.domain.model.ExternalDataSource
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.ArrayNode
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.*
+import xyz.bukinator.client.domain.external.ExternalDataDetail
+import xyz.bukinator.client.domain.external.ExternalDataFetcherFactory
+import xyz.bukinator.client.domain.external.ExternalDataSource
+import xyz.bukinator.client.domain.external.ExternalDataSummary
 
 @Component
 @StepScope
-class OriginHouseDataReader : ItemReader<List<JsonNode>> {
+class OriginHouseDataReader : ItemReader<List<ExternalDataSummary>> {
     private val geohashIterator = FETCHABLE_GEOHASH.iterator()
 
-    override fun read(): List<JsonNode>? {
+    override fun read(): List<ExternalDataSummary>? {
         if (!geohashIterator.hasNext()) {
             return null
         }
@@ -26,18 +22,18 @@ class OriginHouseDataReader : ItemReader<List<JsonNode>> {
         return fetchZigbangItemSummaries(geohash)
     }
 
-    private fun fetchZigbangItemSummaries(geohash: String): List<JsonNode> {
+    private fun fetchZigbangItemSummaries(geohash: String): List<ExternalDataSummary> {
         val zigbangOneroomDataFetcher = ExternalDataFetcherFactory.createFetcher(ExternalDataSource.ZIGBANG_ONEROOM)
         val itemIds = zigbangOneroomDataFetcher.fetchItemIds(geohash)
         return zigbangOneroomDataFetcher.fetchItemSummaries(itemIds)
     }
 
-    private fun fetchZigbangItemDetail(itemId: Long): JsonNode {
+    private fun fetchZigbangItemDetail(itemId: Long): ExternalDataDetail {
         val zigbangOneroomDataFetcher = ExternalDataFetcherFactory.createFetcher(ExternalDataSource.ZIGBANG_ONEROOM)
         return zigbangOneroomDataFetcher.fetchItemDetail(itemId)
     }
 
     companion object {
-        val FETCHABLE_GEOHASH = arrayOf("wydm2")
+        val FETCHABLE_GEOHASH = arrayOf("wydm23")
     }
 }

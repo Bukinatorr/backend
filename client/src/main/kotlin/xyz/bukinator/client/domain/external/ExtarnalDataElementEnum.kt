@@ -6,11 +6,15 @@ enum class ExternalDataSource {
 
 // 전세라는 용어 자체가 한국에만 있기 때문에 JEONSE이다.
 enum class SalesType {
-    MONTHLY, JEONSE
+    MONTHLY, JEONSE, UNKNOWN
+}
+
+enum class HouseType {
+    ONEROOM, OFFICETEL, UNKNOWN
 }
 
 enum class HouseStatus {
-    OPEN, CLOSE
+    OPEN, CLOSE, UNKNOWN
 }
 
 enum class RoomDirection {
