@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import xyz.bukinator.house.model.House
+import xyz.bukinator.house.model.embeddable.Area
 import xyz.bukinator.house.model.embeddable.Floor
 import xyz.bukinator.house.model.embeddable.Location
 import xyz.bukinator.house.repository.HouseRepository
@@ -88,6 +89,14 @@ class HouseQueryService(
 
             criteria.parkingCount?.let {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("parkingCount"), it))
+            }
+
+            criteria.area?.let {
+                val area = root.get<Area>("area")
+                val areaToUse = area.get<Double>("areaContract") ?: area.get<Double>("areaSupply") ?: area.get<Double>("areaIndividual")
+                    // 면적 정보를 사용할 수 없는 경우에는 무시한다
+                    ?: return@let
+                predicates.add(criteriaBuilder.between(areaToUse, it.min, it.max))
             }
 
             if (predicates.isEmpty()) {
