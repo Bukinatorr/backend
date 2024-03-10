@@ -1,8 +1,7 @@
-package xyz.bukinator.client.domain.fetcher
+package xyz.bukinator.client.domain.external
 
 import xyz.bukinator.client.domain.fetcher.zigbang.ZigbangOfficetelDataFetcher
 import xyz.bukinator.client.domain.fetcher.zigbang.ZigbangOneroomDataFetcher
-import xyz.bukinator.client.domain.model.ExternalDataSource
 
 object ExternalDataFetcherFactory {
     fun createFetcher(externalDataSource: ExternalDataSource): ExternalDataFetcher {

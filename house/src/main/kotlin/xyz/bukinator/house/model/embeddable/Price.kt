@@ -18,7 +18,7 @@ class Price(
 
     @Column(name = "price_manage", nullable = false)
     @Comment("관리세")
-    var priceManage: Int,
+    var priceManage: Double,
 
     @Column(name = "price_manage_includes")
     @Convert(converter = StringToListConverter::class)

@@ -1,25 +1,29 @@
 package xyz.bukinator.client.domain.fetcher.zigbang
 
-import com.fasterxml.jackson.databind.JsonNode
-import xyz.bukinator.client.domain.fetcher.ExternalDataFetcher
-import xyz.bukinator.client.domain.fetcher.zigbang.internal.ZigbangDataFetcher
+import xyz.bukinator.client.domain.external.ExternalDataDetail
+import xyz.bukinator.client.domain.external.ExternalDataFetcher
+import xyz.bukinator.client.domain.external.ExternalDataSummary
+import xyz.bukinator.client.domain.fetcher.zigbang.internal.DataFetcher
+import xyz.bukinator.client.domain.model.ZigbangDataSummary
 
-class ZigbangOfficetelDataFetcher : ExternalDataFetcher {
-    private val zigbangDataFetcher = ZigbangDataFetcher()
+internal class ZigbangOfficetelDataFetcher : ExternalDataFetcher {
+    private val dataFetcher = DataFetcher()
 
     override fun fetchItemIds(geohash: String): List<Long> {
-        return zigbangDataFetcher.fetchOfficetelItemIds(geohash).items.map { it.itemId }
+        return dataFetcher.fetchItemIds("officetel", geohash).items.map { it.itemId }
     }
 
     override fun fetchItemIds(lat: Long, lng: Long): List<Long> {
         throw Exception("geohash만 지원")
     }
 
-    override fun fetchItemSummaries(itemIds: List<Long>): List<JsonNode> {
-        return zigbangDataFetcher.fetchOfficetelItemList(itemIds).items
+    override fun fetchItemSummaries(itemIds: List<Long>): List<ExternalDataSummary> {
+        return dataFetcher.fetchItemList(itemIds).items.map { itemSummary ->
+            ZigbangDataSummary(itemSummary)
+        }
     }
 
-    override fun fetchItemDetail(itemId: Long): JsonNode {
-        return  zigbangDataFetcher.fetchOfficetelItemDetail(itemId)
+    override fun fetchItemDetail(itemId: Long): ExternalDataDetail {
+        return dataFetcher.fetchItemDetail(itemId)
     }
 }
