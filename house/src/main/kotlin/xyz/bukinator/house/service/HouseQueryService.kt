@@ -1,6 +1,10 @@
 package xyz.bukinator.house.service
 
+import jakarta.persistence.criteria.CriteriaBuilder
+import jakarta.persistence.criteria.CriteriaQuery
+import jakarta.persistence.criteria.Expression
 import jakarta.persistence.criteria.Predicate
+import jakarta.persistence.criteria.Root
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
@@ -9,8 +13,10 @@ import xyz.bukinator.house.model.House
 import xyz.bukinator.house.model.embeddable.Area
 import xyz.bukinator.house.model.embeddable.Floor
 import xyz.bukinator.house.model.embeddable.Location
+import xyz.bukinator.house.model.embeddable.Price
 import xyz.bukinator.house.repository.HouseRepository
 import xyz.bukinator.house.service.dto.HouseQueryCriteria
+
 
 @Service
 class HouseQueryService(
@@ -39,17 +45,11 @@ class HouseQueryService(
                 predicates.add(criteriaBuilder.equal(salesType, it))
             }
 
-            criteria.deposit?.let {
-                val deposit = root.get<Int>("deposit")
-                predicates.add(criteriaBuilder.between(deposit, it.min, it.max))
-            }
-
-            criteria.rent?.takeIf {
-                // TODO: Fix to use enum
-                criteria.salesType == "월세" || criteria.salesType == null
-            }?.let {
-                val rent = root.get<Int>("rent")
-                predicates.add(criteriaBuilder.between(rent, it.min, it.max))
+            val isRentAndDepositConvertible = criteria.isRentAndDepositConvertible ?: false
+            if (isRentAndDepositConvertible) {
+                buildConvertibleRentAndDepositPredicate(criteria, root, criteriaBuilder, predicates)
+            } else {
+                buildRentAndDepositPredicate(criteria, root, criteriaBuilder, predicates)
             }
 
             criteria.roomType?.let {
@@ -105,5 +105,46 @@ class HouseQueryService(
 
             criteriaBuilder.and(*predicates.toTypedArray())
         }
+    }
+
+    private fun buildRentAndDepositPredicate(criteria: HouseQueryCriteria, root: Root<House>, criteriaBuilder: CriteriaBuilder, predicates: MutableList<Predicate>) {
+        criteria.deposit?.let {
+            val price = root.get<Price>("price")
+            val deposit = price.get<Int>("priceDeposit")
+            predicates.add(criteriaBuilder.between(deposit, it.min, it.max))
+        }
+
+        criteria.rent?.takeIf {
+            // TODO: Fix to use enum
+            criteria.salesType == "월세" || criteria.salesType == null
+        }?.let {
+            val price = root.get<Price>("price")
+            val rent = price.get<Int>("priceRent")
+            predicates.add(criteriaBuilder.between(rent, it.min, it.max))
+        }
+    }
+
+    private fun buildConvertibleRentAndDepositPredicate(criteria: HouseQueryCriteria, root: Root<House>, criteriaBuilder: CriteriaBuilder, predicates: MutableList<Predicate>) {
+        val price = root.get<Price>("price")
+
+        if (criteria.deposit == null || criteria.rent == null) return
+
+        val deposit = price.get<Int>("priceDeposit")
+        val rent = price.get<Int>("priceRent")
+
+        val calculatedScore = criteriaBuilder.sum(
+            rent,
+            criteriaBuilder.prod(criteriaBuilder.quot(deposit, 1000), 5)
+        ).`as`(Int::class.java)
+
+        val maxScore = criteria.rent.max.plus((criteria.deposit.max / UNIT_DEPOSIT * DEFAULT_RENT_PER_UNIT_DEPOSIT))
+        val minScore = criteria.rent.min.plus((criteria.deposit.min / UNIT_DEPOSIT * DEFAULT_RENT_PER_UNIT_DEPOSIT))
+
+        predicates.add(criteriaBuilder.between(calculatedScore, minScore, maxScore))
+    }
+
+    companion object {
+        private const val DEFAULT_RENT_PER_UNIT_DEPOSIT = 50
+        private const val UNIT_DEPOSIT = 1000
     }
 }
