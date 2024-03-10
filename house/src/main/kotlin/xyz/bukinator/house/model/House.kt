@@ -11,8 +11,7 @@ import org.hibernate.annotations.Comment
 import org.hibernate.annotations.GenericGenerator
 import xyz.bukinator.common.BaseEntity
 import xyz.bukinator.common.converter.StringToListConverter
-import xyz.bukinator.house.dto.CreateHouseDto
-import xyz.bukinator.house.dto.UpdateHouseDto
+import xyz.bukinator.house.dto.HouseDto
 import xyz.bukinator.house.model.embeddable.Address
 import xyz.bukinator.house.model.embeddable.Area
 import xyz.bukinator.house.model.embeddable.Floor
@@ -38,7 +37,7 @@ class House(
 
     @Column(name = "sales_type", nullable = false)
     @Comment("판매 타입")
-    val salesType: String,
+    var salesType: String,
 
     @Column(name = "house_name")
     @Comment("건물 이름")
@@ -46,15 +45,15 @@ class House(
 
     @Column(name = "house_type")
     @Comment("방 타입")
-    val houseType: String,
+    var houseType: String,
 
     @Column(name = "room_type")
     @Comment("방 구조")
-    val roomType: String,
+    var roomType: String,
 
     @Column(name = "room_direction")
     @Comment("방 향")
-    val roomDirection: String,
+    var roomDirection: String,
 
     @Column(name = "thumbnail")
     @Comment("썸네일 이미지 링크")
@@ -91,11 +90,11 @@ class House(
 
     @Column(name = "parking_count")
     @Comment("주차 대수")
-    val parkingCount: Int,
+    var parkingCount: Int,
 
     @Column(name = "elevator")
     @Comment("승강기 존재 유무")
-    val elevator: Boolean,
+    var elevator: Boolean,
 
     @Column(name = "movin_date")
     @Comment("입주일")
@@ -103,11 +102,11 @@ class House(
 
     @Column(name = "approve_date")
     @Comment("승인일")
-    val approveDate: LocalDate,
+    var approveDate: LocalDate?,
 
     @Column(name = "residence_type")
     @Comment("주거 형태")
-    val residenceType: String,
+    var residenceType: String,
 
     @Column(name = "pnu")
     @Comment("시군구 코드")
@@ -115,7 +114,7 @@ class House(
 
     @Embedded
     @Comment("층수 정보")
-    val floor: Floor,
+    var floor: Floor,
 
     @Column(name = "options")
     @Convert(converter = StringToListConverter::class)
@@ -127,9 +126,13 @@ class House(
     val address: Address,
 ) : BaseEntity<UUID>() {
     companion object {
-        fun create(dto: CreateHouseDto): House {
+        fun create(dto: HouseDto): House {
             return House(
-                origin = Origin(dto.originId, dto.originSource, dto.originUpdatedAt),
+                origin = Origin(
+                    originId = dto.originId,
+                    originSource = dto.originSource,
+                    originUpdatedAt = dto.originUpdatedAt
+                ),
                 salesType = dto.salesType,
                 houseName = dto.houseName,
                 houseType = dto.houseType,
@@ -156,7 +159,7 @@ class House(
         }
     }
 
-    internal fun modify(dto: UpdateHouseDto): House {
+    internal fun modify(dto: HouseDto): House {
         this.origin.originUpdatedAt = dto.originUpdatedAt ?: this.origin.originUpdatedAt
         this.houseName = dto.houseName
         this.thumbnail = dto.thumbnail

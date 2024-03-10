@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import
 @SpringBootApplication(
     scanBasePackages = [
         "xyz.bukinator.api",
-        "xyz.bukinator.house"
+        "xyz.bukinator.house",
     ]
 )
 @Import(ApiConfiguration::class)

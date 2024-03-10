@@ -1,17 +1,17 @@
 package xyz.bukinator.client.domain.fetcher.zigbang.internal
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.google.gson.JsonObject
+import com.fasterxml.jackson.databind.JsonNode
 
-internal data class OneroomItemIdResponse(
+internal data class ZigbangOneroomItemIdResponse (
     @JsonProperty("items")
-    val items: List<Item>,
+    val items: List<ItemId>,
 ) {
-    data class Item(
+    data class ItemId(
         @JsonProperty("lat")
         val lat: Double,
         @JsonProperty("lng")
-        val lng: Double ,
+        val lng: Double,
         @JsonProperty("itemId")
         val itemId: Long,
         @JsonProperty("itemBmType")
@@ -19,11 +19,11 @@ internal data class OneroomItemIdResponse(
     )
 }
 
-internal data class OfficetelItemIdResponse(
+internal data class ZigbangOfficetelItemIdResponse (
     @JsonProperty("items")
-    val items: List<Item>,
+    val items: List<ItemId>,
 ) {
-    data class Item(
+    data class ItemId(
         @JsonProperty("buildingId")
         val buildingId: Long,
         @JsonProperty("itemId")
@@ -33,12 +33,7 @@ internal data class OfficetelItemIdResponse(
     )
 }
 
-internal data class ItemListResponse(
+internal data class ZigbangItemSummaryResponse(
     @JsonProperty("items")
-    val items: List<JsonObject>,
-)
-
-internal data class ItemDetailResponse(
-    @JsonProperty("item")
-    val item: JsonObject,
+    val items: List<JsonNode>,
 )

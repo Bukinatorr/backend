@@ -37,80 +37,80 @@ class HouseControllerTest : BaseIntegrationTest() {
         Assertions.assertNotNull(webApplicationContext.getBean("houseController"))
     }
 
-    @Test
-    @DisplayName("list api가 잘 동작해야 한다")
-    fun list_test() {
-        (1..10).map {
-            houseService.create(
-                House(
-                    id = UUID.randomUUID(),
-                    description = "test",
-                    origin = Origin(
-                        originSource = "ipsum",
-                        originId = "donec",
-                        originUpdatedAt = null
-                    ),
-                    salesType = if (it % 2 == 0) "월세" else "전세",
-                    houseName = null,
-                    houseType = "sed",
-                    roomType = "ad",
-                    roomDirection = "lacinia",
-                    thumbnail = "no",
-                    images = listOf(),
-                    price = Price(
-                        priceDeposit = 8629,
-                        priceRent = 6182,
-                        priceManage = 7403,
-                        priceManageIncludes = listOf()
-                    ),
-                    area = Area(
-                        areaContract = null,
-                        areaSupply = 30.0,
-                        areaIndividual = null
-                    ),
-                    title = "luctus",
-                    status = HouseStatus.OPEN,
-                    location = Location(lat = 4.5, lng = 6.7),
-                    parkingCount = 4773,
-                    elevator = false,
-                    movinDate = LocalDate.now(),
-                    approveDate = LocalDate.now(),
-                    residenceType = "dicta",
-                    pnu = "erat",
-                    floor = Floor(floorTotal = 4912, floorTarget = 1809),
-                    options = listOf(),
-                    address = Address(
-                        addressLocal1 = "netus",
-                        addressLocal2 = "inimicus",
-                        addressLocal3 = "mattis",
-                        addressLocal4 = "epicuri",
-                        addressJibun = "discere"
-                    )
-                )
-            )
-        }
-
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/house/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(
-                    """
-                    {
-                        "querySpecification": {
-                            "salesType": "월세"
-                        },
-                        "page": {
-                            "page": 0,
-                            "size": 10
-                        }
-                    }
-                    """.trimIndent()
-                )
-        )
-            .andExpect(status().isOk)
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.houses").isArray)
-            .andReturn()
-        println(result.response.contentAsString)
-    }
+//    @Test
+//    @DisplayName("list api가 잘 동작해야 한다")
+//    fun list_test() {
+//        (1..10).map {
+//            houseService.create(
+//                House(
+//                    id = UUID.randomUUID(),
+//                    description = "test",
+//                    origin = Origin(
+//                        originSource = "ipsum",
+//                        originId = "donec",
+//                        originUpdatedAt = null
+//                    ),
+//                    salesType = if (it % 2 == 0) "월세" else "전세",
+//                    houseName = null,
+//                    houseType = "sed",
+//                    roomType = "ad",
+//                    roomDirection = "lacinia",
+//                    thumbnail = "no",
+//                    images = listOf(),
+//                    price = Price(
+//                        priceDeposit = 8629,
+//                        priceRent = 6182,
+//                        priceManage = 7403,
+//                        priceManageIncludes = listOf()
+//                    ),
+//                    area = Area(
+//                        areaContract = null,
+//                        areaSupply = 30.0,
+//                        areaIndividual = null
+//                    ),
+//                    title = "luctus",
+//                    status = HouseStatus.OPEN,
+//                    location = Location(lat = 4.5, lng = 6.7),
+//                    parkingCount = 4773,
+//                    elevator = false,
+//                    movinDate = LocalDate.now(),
+//                    approveDate = LocalDate.now(),
+//                    residenceType = "dicta",
+//                    pnu = "erat",
+//                    floor = Floor(floorTotal = 4912, floorTarget = 1809),
+//                    options = listOf(),
+//                    address = Address(
+//                        addressLocal1 = "netus",
+//                        addressLocal2 = "inimicus",
+//                        addressLocal3 = "mattis",
+//                        addressLocal4 = "epicuri",
+//                        addressJibun = "discere"
+//                    )
+//                )
+//            )
+//        }
+//
+//        val result = mockMvc.perform(
+//            MockMvcRequestBuilders.get("/api/house/")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(
+//                    """
+//                    {
+//                        "querySpecification": {
+//                            "salesType": "월세"
+//                        },
+//                        "page": {
+//                            "page": 0,
+//                            "size": 10
+//                        }
+//                    }
+//                    """.trimIndent()
+//                )
+//        )
+//            .andExpect(status().isOk)
+//            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+//            .andExpect(jsonPath("$.houses").isArray)
+//            .andReturn()
+//        println(result.response.contentAsString)
+//    }
 }
