@@ -11,8 +11,6 @@ import java.util.*
 class HouseService(
     private val houseRepository: HouseRepository,
 ) {
-    var count = 0
-
     @Transactional(readOnly = true)
     fun get(id: UUID) = houseRepository.findById(id)
 
@@ -37,19 +35,6 @@ class HouseService(
             existingHouses?.get(houseDto.originId)?.apply { modify(houseDto) } ?: House.create(houseDto)
         }
 
-        println("${newHouses.size}개 넣어야징~")
-
         houseRepository.saveAll(newHouses)
-
-        count += newHouses.size
-        println("count: $count")
     }
-
-//    @Transactional
-//    fun delete(id: UUID) {
-//        get(id).orElse(null)?.let {
-//            it.deletedAt = LocalDateTime.now()
-//            houseRepository.save(it)
-//        } ?: throw RuntimeException("Not found")
-//    }
 }
