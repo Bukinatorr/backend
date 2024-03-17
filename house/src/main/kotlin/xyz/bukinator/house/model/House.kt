@@ -29,22 +29,6 @@ import java.util.UUID
 @Entity
 @Table(name = "house")
 class House(
-//    @Id
-//    @GeneratedValue(
-//        strategy = GenerationType.SEQUENCE,
-//        generator = "sequenceGenerator"
-//    )
-//    @GenericGenerator(
-//        name = "sequenceGenerator",
-//        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-//        parameters = [
-//            Parameter(name = "sequence_name", value = "hibernate_sequence"),
-//            Parameter(name = "optimizer", value = "pooled"),
-//            Parameter(name = "initial_value", value = "1"),
-//            Parameter(name = "increment_size", value = "1000")
-//        ]
-//    )
-//    // @Column(columnDefinition = "BINARY(16)")
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
