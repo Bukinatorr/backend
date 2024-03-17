@@ -13,6 +13,9 @@ data class HouseQueryCriteria(
     val deposit: Deposit? = null,
     val rent: Rent? = null,
     val parkingCount: Int? = null,
+    val area: RoomArea? = null,
+    val isRentAndDepositConvertible: Boolean = false,
+    val isRentIncludesManage: Boolean = false,
 ) {
     data class ScreenLocation(
         val northWest: Location,
@@ -27,5 +30,10 @@ data class HouseQueryCriteria(
     data class Rent(
         val min: Int,
         val max: Int,
+    )
+
+    data class RoomArea(
+        val min: Double,
+        val max: Double,
     )
 }
