@@ -18,7 +18,7 @@ internal open class DataFetcher {
                 .builder()
                 .codecs { configurer ->
                     run {
-                        configurer.defaultCodecs().maxInMemorySize(10 * 1024 * 1024)
+                        configurer.defaultCodecs().maxInMemorySize(100 * 1024 * 1024)
                         configurer.defaultCodecs().jackson2JsonEncoder(Jackson2JsonEncoder(objectMapper))
                         configurer.defaultCodecs().jackson2JsonDecoder(Jackson2JsonDecoder(objectMapper))
                     }

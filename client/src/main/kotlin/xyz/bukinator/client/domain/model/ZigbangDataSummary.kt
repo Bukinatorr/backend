@@ -45,6 +45,10 @@ internal class ZigbangDataSummary(
         }
     }
 
+    override fun getRoomType(): String? {
+        return itemSummary.roomType
+    }
+
     override fun getAreaContract(): Double? {
         return itemSummary.areaContract?.m2
     }
@@ -74,7 +78,10 @@ internal class ZigbangDataSummary(
     }
 
     override fun getAddressLocal1(): String? {
-        return itemSummary.addressOrigin?.local1
+        return when (itemSummary.addressOrigin?.local1) {
+            "서울특별시" -> "서울시"
+            else -> itemSummary.addressOrigin?.local1
+        }
     }
 
     override fun getAddressLocal2(): String? {

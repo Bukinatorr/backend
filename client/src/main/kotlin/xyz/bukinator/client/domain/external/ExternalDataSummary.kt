@@ -10,6 +10,7 @@ interface ExternalDataSummary {
     // 집 정보
     fun getSalesType(): SalesType
     fun getHouseType(): HouseType
+    fun getRoomType(): String?
     fun getAreaContract(): Double?
     fun getAreaSupply(): Double?
     fun getAreaIndividual(): Double?

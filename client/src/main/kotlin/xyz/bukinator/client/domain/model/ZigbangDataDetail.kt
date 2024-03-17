@@ -45,6 +45,10 @@ internal class ZigbangDataDetail(
         }
     }
 
+    override fun getRoomType(): String? {
+        return itemDetail.roomType
+    }
+
     override fun getAreaContract(): Double? {
         return itemDetail.areaContract?.m2
     }

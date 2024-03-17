@@ -1,18 +1,12 @@
 package xyz.bukinator.house.model
 
-import jakarta.persistence.Column
-import jakarta.persistence.Convert
-import jakarta.persistence.Embedded
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import org.hibernate.annotations.Comment
 import org.hibernate.annotations.GenericGenerator
+import org.hibernate.annotations.Parameter
 import xyz.bukinator.client.domain.external.HouseStatus
 import xyz.bukinator.client.domain.external.HouseType
 import xyz.bukinator.client.domain.external.SalesType
-import xyz.bukinator.common.BaseEntity
 import xyz.bukinator.common.converter.StringToListConverter
 import xyz.bukinator.house.dto.HouseDto
 import xyz.bukinator.house.model.embeddable.Address
@@ -22,11 +16,28 @@ import xyz.bukinator.house.model.embeddable.Location
 import xyz.bukinator.house.model.embeddable.Origin
 import xyz.bukinator.house.model.embeddable.Price
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 
 @Entity
 @Table(name = "house")
 class House(
+//    @Id
+//    @GeneratedValue(
+//        strategy = GenerationType.SEQUENCE,
+//        generator = "sequenceGenerator"
+//    )
+//    @GenericGenerator(
+//        name = "sequenceGenerator",
+//        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+//        parameters = [
+//            Parameter(name = "sequence_name", value = "hibernate_sequence"),
+//            Parameter(name = "optimizer", value = "pooled"),
+//            Parameter(name = "initial_value", value = "1"),
+//            Parameter(name = "increment_size", value = "1000")
+//        ]
+//    )
+//    // @Column(columnDefinition = "BINARY(16)")
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
@@ -37,6 +48,7 @@ class House(
     @Comment("데이터 원천 메타 정보")
     var origin: Origin,
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "sales_type", nullable = false)
     @Comment("판매 타입")
     var salesType: SalesType,
@@ -126,7 +138,16 @@ class House(
     @Embedded
     @Comment("주소 정보")
     val address: Address,
-) : BaseEntity<UUID>() {
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    val createdAt: LocalDateTime? = null,
+
+    @Column(name = "updated_at", nullable = false, updatable = true)
+    var updatedAt: LocalDateTime? = null,
+
+    @Column(name = "deleted_at", updatable = true)
+    var deletedAt: LocalDateTime? = null
+)  {
     companion object {
         fun create(dto: HouseDto): House {
             return House(
@@ -156,7 +177,9 @@ class House(
                 pnu = dto.pnu,
                 floor = Floor(dto.floorTotal, dto.floorTarget),
                 options = dto.options,
-                address = Address(dto.addressLocal1, dto.addressLocal2, dto.addressLocal3, dto.addressLocal4, dto.addressJibun)
+                address = Address(dto.addressLocal1, dto.addressLocal2, dto.addressLocal3, dto.addressLocal4, dto.addressJibun),
+                createdAt = LocalDateTime.now(),
+                updatedAt = LocalDateTime.now()
             )
         }
     }

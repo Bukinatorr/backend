@@ -56,7 +56,7 @@ data class HouseDto(
                 salesType = origin.getSalesType(),
                 houseName = "",
                 houseType = origin.getHouseType(),
-                roomType = "",
+                roomType = origin.getRoomType() ?: "-1",
                 roomDirection = "",
                 thumbnail = origin.getThumbnail() ?: "",
                 images = listOf(),
