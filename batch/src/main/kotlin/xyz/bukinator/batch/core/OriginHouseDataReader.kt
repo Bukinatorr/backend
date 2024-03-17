@@ -34,6 +34,11 @@ class OriginHouseDataReader : ItemReader<List<ExternalDataSummary>> {
     }
 
     companion object {
-        val FETCHABLE_GEOHASH = arrayOf("wydm23")
+        val FETCHABLE_GEOHASH = arrayOf(
+            "wydmb", "wydmc", "wydmf", "wydmg", "wydmu", "wydmy",
+            "wydm8", "wydm9", "wydmd", "wydme", "wydms", "wydmt",
+            "wydm2", "wydm3", "wydm6", "wydm7", "wydmk", "wydmm",
+            "wydm0", "wydm1", "wydm4", "wydm5", "wydmh", "wydmj"
+        )
     }
 }

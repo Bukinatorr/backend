@@ -56,7 +56,7 @@ data class HouseDto(
                 salesType = origin.getSalesType(),
                 houseName = "",
                 houseType = origin.getHouseType(),
-                roomType = "",
+                roomType = origin.getRoomType() ?: "-1",
                 roomDirection = "",
                 thumbnail = origin.getThumbnail() ?: "",
                 images = listOf(),
@@ -85,9 +85,8 @@ data class HouseDto(
                 addressLocal2 = origin.getAddressLocal2() ?: "",
                 addressLocal3 = origin.getAddressLocal3() ?: "",
                 addressLocal4 = origin.getAddressLocal4() ?: "",
-                addressJibun = "",
+                addressJibun = ""
             )
         }
     }
 }
-

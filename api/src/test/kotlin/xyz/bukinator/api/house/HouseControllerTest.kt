@@ -4,23 +4,9 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.MediaType
 import org.springframework.mock.web.MockServletContext
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import xyz.bukinator.api.BaseIntegrationTest
-import xyz.bukinator.house.model.House
-import xyz.bukinator.house.model.embeddable.Address
-import xyz.bukinator.house.model.embeddable.Area
-import xyz.bukinator.house.model.embeddable.Floor
-import xyz.bukinator.house.model.embeddable.Location
-import xyz.bukinator.house.model.embeddable.Origin
-import xyz.bukinator.house.model.embeddable.Price
-import xyz.bukinator.house.model.enumerate.HouseStatus
 import xyz.bukinator.house.service.HouseService
-import java.time.LocalDate
 import java.util.*
 
 class HouseControllerTest : BaseIntegrationTest() {
