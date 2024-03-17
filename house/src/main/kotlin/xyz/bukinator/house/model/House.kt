@@ -3,10 +3,10 @@ package xyz.bukinator.house.model
 import jakarta.persistence.*
 import org.hibernate.annotations.Comment
 import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.Parameter
 import xyz.bukinator.client.domain.external.HouseStatus
 import xyz.bukinator.client.domain.external.HouseType
 import xyz.bukinator.client.domain.external.SalesType
+import xyz.bukinator.common.BaseEntity
 import xyz.bukinator.common.converter.StringToListConverter
 import xyz.bukinator.house.dto.HouseDto
 import xyz.bukinator.house.model.embeddable.Address
@@ -16,28 +16,11 @@ import xyz.bukinator.house.model.embeddable.Location
 import xyz.bukinator.house.model.embeddable.Origin
 import xyz.bukinator.house.model.embeddable.Price
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.UUID
 
 @Entity
 @Table(name = "house")
 class House(
-//    @Id
-//    @GeneratedValue(
-//        strategy = GenerationType.SEQUENCE,
-//        generator = "sequenceGenerator"
-//    )
-//    @GenericGenerator(
-//        name = "sequenceGenerator",
-//        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-//        parameters = [
-//            Parameter(name = "sequence_name", value = "hibernate_sequence"),
-//            Parameter(name = "optimizer", value = "pooled"),
-//            Parameter(name = "initial_value", value = "1"),
-//            Parameter(name = "increment_size", value = "1000")
-//        ]
-//    )
-//    // @Column(columnDefinition = "BINARY(16)")
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
@@ -138,16 +121,7 @@ class House(
     @Embedded
     @Comment("주소 정보")
     val address: Address,
-
-    @Column(name = "created_at", nullable = false, updatable = false)
-    val createdAt: LocalDateTime? = null,
-
-    @Column(name = "updated_at", nullable = false, updatable = true)
-    var updatedAt: LocalDateTime? = null,
-
-    @Column(name = "deleted_at", updatable = true)
-    var deletedAt: LocalDateTime? = null
-)  {
+) : BaseEntity<UUID>()  {
     companion object {
         fun create(dto: HouseDto): House {
             return House(
@@ -178,8 +152,6 @@ class House(
                 floor = Floor(dto.floorTotal, dto.floorTarget),
                 options = dto.options,
                 address = Address(dto.addressLocal1, dto.addressLocal2, dto.addressLocal3, dto.addressLocal4, dto.addressJibun),
-                createdAt = LocalDateTime.now(),
-                updatedAt = LocalDateTime.now()
             )
         }
     }
