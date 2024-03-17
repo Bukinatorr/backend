@@ -1,6 +1,5 @@
 package xyz.bukinator.batch.core
 
-import com.fasterxml.jackson.databind.JsonNode
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.JobExecution
 import org.springframework.batch.core.JobExecutionListener
@@ -19,7 +18,7 @@ import org.springframework.transaction.PlatformTransactionManager
 import xyz.bukinator.client.domain.external.ExternalDataSummary
 import xyz.bukinator.house.dto.HouseDto
 import xyz.bukinator.house.service.HouseService
-import java.util.*
+import java.util.UUID
 
 @Configuration
 @EnableJpaRepositories(

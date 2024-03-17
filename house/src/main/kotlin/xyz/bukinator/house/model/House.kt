@@ -121,7 +121,7 @@ class House(
     @Embedded
     @Comment("주소 정보")
     val address: Address,
-) : BaseEntity<UUID>()  {
+) : BaseEntity<UUID>() {
     companion object {
         fun create(dto: HouseDto): House {
             return House(
@@ -151,7 +151,7 @@ class House(
                 pnu = dto.pnu,
                 floor = Floor(dto.floorTotal, dto.floorTarget),
                 options = dto.options,
-                address = Address(dto.addressLocal1, dto.addressLocal2, dto.addressLocal3, dto.addressLocal4, dto.addressJibun),
+                address = Address(dto.addressLocal1, dto.addressLocal2, dto.addressLocal3, dto.addressLocal4, dto.addressJibun)
             )
         }
     }
