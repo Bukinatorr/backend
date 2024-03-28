@@ -28,13 +28,18 @@ class HouseService(
 
     @Transactional
     fun createOrUpdateAll(houseDtos: List<HouseDto>) {
-        val originIds = houseDtos.map { it.originId }
-        val existingHouses = houseRepository.findAllByOrigin_OriginIdIn(originIds)?.associateBy { it.origin.originId }
+//        val originIds = houseDtos.map { it.originId }
+//        val existingHouses = houseRepository.findAllByOrigin_OriginIdIn(originIds)?.associateBy { it.origin.originId }
+//
+//        val newHouses = houseDtos.map { houseDto ->
+//            existingHouses?.get(houseDto.originId)?.apply { modify(houseDto) } ?: House.create(houseDto)
+//        }
 
-        val newHouses = houseDtos.map { houseDto ->
-            existingHouses?.get(houseDto.originId)?.apply { modify(houseDto) } ?: House.create(houseDto)
-        }
+        val newHouses = houseDtos.map { House.create(it) }
 
         houseRepository.saveAll(newHouses)
+
+        println("${newHouses.size}개 완료, 10초간 sleep")
+        Thread.sleep(10000)
     }
 }

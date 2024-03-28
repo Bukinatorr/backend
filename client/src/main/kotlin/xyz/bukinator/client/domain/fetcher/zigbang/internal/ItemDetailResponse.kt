@@ -1,16 +1,13 @@
 package xyz.bukinator.client.domain.fetcher.zigbang.internal
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import xyz.bukinator.client.domain.external.ExternalDataDetail
-import xyz.bukinator.client.domain.external.HouseStatus
-import xyz.bukinator.client.domain.external.RoomDirection
-import xyz.bukinator.client.domain.external.SalesType
+import xyz.bukinator.client.domain.external.*
 
 internal data class ItemDetailResponse(
     @JsonProperty("item")
-    val item: Item,
-) : ExternalDataDetail {
-    data class Item(
+    val item: ItemDetail,
+) {
+    data class ItemDetail (
         @JsonProperty("itemId")
         val itemId: Long?,
         @JsonProperty("salesType")
@@ -142,165 +139,5 @@ internal data class ItemDetailResponse(
             @JsonProperty("localText")
             val localText: String?,
         )
-    }
-
-    override fun getItemId(): String {
-        return item.itemId.toString()
-    }
-
-    override fun getThumbnail(): String? {
-        return item.imageThumbnail
-    }
-
-    override fun getTitle(): String? {
-        return item.title
-    }
-
-    override fun getStatus(): HouseStatus? {
-        return when (item.status) {
-            "open" -> HouseStatus.OPEN
-            "close" -> HouseStatus.CLOSE
-            else -> null
-        }
-    }
-
-    override fun getHouseName(): String? {
-        return null
-    }
-
-    override fun getImages(): List<String>? {
-        return item.images
-    }
-
-    override fun getDescription(): String? {
-        return item.description
-    }
-
-    override fun getMoveinDate(): String? {
-        return item.moveinDate
-    }
-
-    override fun getApproveDate(): String? {
-        return item.approveDate
-    }
-
-    override fun getPnu(): String? {
-        return item.pnu
-    }
-
-    override fun getOptions(): List<String>? {
-        return item.options
-    }
-
-    override fun getSalesType(): SalesType? {
-        return when (item.salesType) {
-            "월세" -> SalesType.MONTHLY
-            "전세" -> SalesType.JEONSE
-            else -> null
-        }
-    }
-
-    override fun getHouseType(): String? {
-        return item.roomType
-    }
-
-    override fun getAreaContract(): Double? {
-        return item.area?.contractAreaM2
-    }
-
-    override fun getAreaSupply(): Double? {
-        return item.area?.supplyAreaM2
-    }
-
-    override fun getAreaIndividual(): Double? {
-        return item.area?.individualAreaM2
-    }
-
-    override fun getFloorTotal(): Int? {
-        return item.floor?.allFloors?.toIntOrNull()
-    }
-
-    override fun getFloorTarget(): Int? {
-        return item.floor?.floor?.toIntOrNull()
-    }
-
-    override fun getRoomType(): String? {
-        return item.roomType
-    }
-
-    override fun getRoomDirection(): RoomDirection? {
-        return when (item.roomDirection) {
-            "동", "E" -> RoomDirection.EAST
-            "서", "W" -> RoomDirection.WEST
-            "남", "S" -> RoomDirection.SOUTH
-            "북", "N" -> RoomDirection.NORTH
-            "남동", "동남", "SE", "ES" -> RoomDirection.SOUTH_EAST
-            "남서", "서남", "SW", "WS" -> RoomDirection.SOUTH_WEST
-            "북동", "동북", "NE", "EN" -> RoomDirection.NORTH_EAST
-            "북서", "서북", "NW", "WN" -> RoomDirection.NORTH_WEST
-            else -> null
-        }
-    }
-
-    override fun getParkingCount(): Double? {
-        return item.parkingCountText?.let { extractNumberFromString(it) }
-    }
-
-    override fun hasElevator(): Boolean? {
-        return item.elevator
-    }
-
-    override fun getResidenceType(): String? {
-        return item.residenceType
-    }
-
-    override fun getLocationLat(): Double? {
-        return item.randomLocation?.lat
-    }
-
-    override fun getLocationLng(): Double? {
-        return item.randomLocation?.lng
-    }
-
-    override fun getAddressLocal1(): String? {
-        return item.addressOrigin?.local1
-    }
-
-    override fun getAddressLocal2(): String? {
-        return item.addressOrigin?.local2
-    }
-
-    override fun getAddressLocal3(): String? {
-        return item.addressOrigin?.local3
-    }
-
-    override fun getAddressLocal4(): String? {
-        return item.addressOrigin?.local4
-    }
-
-    override fun getAddressJibun(): String? {
-        return item.jibunAddress
-    }
-
-    override fun getPriceDeposit(): Int? {
-        return item.price?.deposit
-    }
-
-    override fun getPriceRent(): Int? {
-        return item.price?.rent
-    }
-
-    override fun getPriceManage(): Double? {
-        return item.manageCost?.amount
-    }
-
-    override fun getPriceManageIncludes(): List<String>? {
-        return item.manageCost?.includes
-    }
-
-    fun extractNumberFromString(text: String): Double? {
-        val regex = Regex("[0-9]+\\.?[0-9]*") // 소수점을 포함하는 숫자에 매칭되는 정규 표현식
-        val matchResult = regex.find(text)
-        return matchResult?.value?.toDoubleOrNull()
     }
 }

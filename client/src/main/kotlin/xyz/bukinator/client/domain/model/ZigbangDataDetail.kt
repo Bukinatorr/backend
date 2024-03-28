@@ -1,20 +1,18 @@
 package xyz.bukinator.client.domain.model
 
-import xyz.bukinator.client.domain.external.ExternalDataSummary
-import xyz.bukinator.client.domain.external.HouseStatus
-import xyz.bukinator.client.domain.external.HouseType
-import xyz.bukinator.client.domain.external.SalesType
+import xyz.bukinator.client.domain.external.*
+import xyz.bukinator.client.domain.fetcher.zigbang.internal.ItemDetailResponse
 import xyz.bukinator.client.domain.fetcher.zigbang.internal.ItemSummaryResponse
 
 internal class ZigbangDataDetail(
-    private val itemDetail: ItemSummaryResponse.ItemSummary,
-) : ExternalDataSummary {
+    private val itemDetail: ItemDetailResponse.ItemDetail
+) : ExternalDataDetail {
     override fun getItemId(): String {
         return itemDetail.itemId.toString()
     }
 
     override fun getThumbnail(): String? {
-        return itemDetail.imagesThumbnail
+        return itemDetail.imageThumbnail
     }
 
     override fun getTitle(): String? {
@@ -23,10 +21,38 @@ internal class ZigbangDataDetail(
 
     override fun getStatus(): HouseStatus {
         return when (itemDetail.status) {
-            true -> HouseStatus.OPEN
-            false -> HouseStatus.CLOSE
+            "open" -> HouseStatus.OPEN
+            "close" -> HouseStatus.CLOSE
             else -> HouseStatus.UNKNOWN
         }
+    }
+
+    override fun getHouseName(): String {
+        return ""
+    }
+
+    override fun getImages(): List<String>? {
+        return itemDetail.images
+    }
+
+    override fun getDescription(): String? {
+        return itemDetail.description
+    }
+
+    override fun getMoveinDate(): String? {
+        return itemDetail.moveinDate
+    }
+
+    override fun getApproveDate(): String? {
+        return ""
+    }
+
+    override fun getPnu(): String? {
+        return itemDetail.pnu
+    }
+
+    override fun getOptions(): List<String>? {
+        return itemDetail.options
     }
 
     override fun getSalesType(): SalesType {
@@ -45,28 +71,58 @@ internal class ZigbangDataDetail(
         }
     }
 
+    override fun getRoomDirection(): RoomDirection {
+        return when (itemDetail.roomDirection) {
+            "동", "E" -> RoomDirection.EAST
+            "서", "W" -> RoomDirection.WEST
+            "남", "S" -> RoomDirection.SOUTH
+            "북", "N" -> RoomDirection.NORTH
+            "남동", "동남", "SE", "ES" -> RoomDirection.SOUTH_EAST
+            "남서", "서남", "SW", "WS" -> RoomDirection.SOUTH_WEST
+            "북동", "동북", "NE", "EN" -> RoomDirection.NORTH_EAST
+            "북서", "서북", "NW", "WN" -> RoomDirection.NORTH_WEST
+            else -> RoomDirection.UNKNOWN
+        }
+    }
+
+    override fun getParkingCount(): Double? {
+        return itemDetail.parkingCountText?.let { extractNumberFromString(it) }
+    }
+
+    override fun hasElevator(): Boolean? {
+        return itemDetail.elevator
+    }
+
+    override fun getResidenceType(): String? {
+        return itemDetail.residenceType
+    }
+
+    override fun getUpdatedAt(): String {
+        return itemDetail.updatedAt ?: ""
+    }
+
     override fun getRoomType(): String? {
         return itemDetail.roomType
     }
 
     override fun getAreaContract(): Double? {
-        return itemDetail.areaContract?.m2
+        return itemDetail.area?.contractAreaM2
     }
 
     override fun getAreaSupply(): Double? {
-        return itemDetail.areaSupply?.m2
+        return itemDetail.area?.supplyAreaM2
     }
 
     override fun getAreaIndividual(): Double? {
-        return itemDetail.areaIndividual?.m2
+        return itemDetail.area?.individualAreaM2
     }
 
     override fun getFloorTotal(): Int? {
-        return itemDetail.buildingFloor?.toIntOrNull()
+        return itemDetail.floor?.allFloors?.toIntOrNull()
     }
 
     override fun getFloorTarget(): Int? {
-        return itemDetail.floor?.toIntOrNull()
+        return itemDetail.floor?.floor?.toIntOrNull()
     }
 
     override fun getLocationLat(): Double? {
@@ -93,15 +149,29 @@ internal class ZigbangDataDetail(
         return itemDetail.addressOrigin?.local4
     }
 
+    override fun getAddressJibun(): String? {
+        return itemDetail.jibunAddress
+    }
+
     override fun getPriceDeposit(): Int? {
-        return itemDetail.deposit
+        return itemDetail.price?.deposit
     }
 
     override fun getPriceRent(): Int? {
-        return itemDetail.rent
+        return itemDetail.price?.rent
     }
 
     override fun getPriceManage(): Double? {
-        return itemDetail.manageCost?.toDoubleOrNull()
+        return itemDetail.manageCost?.amount
+    }
+
+    override fun getPriceManageIncludes(): List<String>? {
+        return itemDetail.manageCost?.includes
+    }
+
+    private fun extractNumberFromString(text: String): Double? {
+        val regex = Regex("[0-9]+\\.?[0-9]*") // 소수점을 포함하는 숫자에 매칭되는 정규 표현식
+        val matchResult = regex.find(text)
+        return matchResult?.value?.toDoubleOrNull()
     }
 }

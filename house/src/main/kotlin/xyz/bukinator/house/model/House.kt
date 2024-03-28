@@ -13,6 +13,7 @@ import org.hibernate.annotations.Comment
 import org.hibernate.annotations.GenericGenerator
 import xyz.bukinator.client.domain.external.HouseStatus
 import xyz.bukinator.client.domain.external.HouseType
+import xyz.bukinator.client.domain.external.RoomDirection
 import xyz.bukinator.client.domain.external.SalesType
 import xyz.bukinator.common.converter.StringToListConverter
 import xyz.bukinator.house.dto.HouseDto
@@ -48,6 +49,7 @@ class House(
     @Comment("건물 이름")
     var houseName: String?,
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "house_type")
     @Comment("방 타입")
     var houseType: HouseType,
@@ -56,9 +58,10 @@ class House(
     @Comment("방 구조")
     var roomType: String,
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "room_direction")
     @Comment("방 향")
-    var roomDirection: String,
+    var roomDirection: RoomDirection,
 
     @Column(name = "thumbnail")
     @Comment("썸네일 이미지 링크")
@@ -85,6 +88,7 @@ class House(
     @Comment("매물 설명")
     var description: String,
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
     @Comment("매물 상태")
     var status: HouseStatus,
@@ -95,7 +99,7 @@ class House(
 
     @Column(name = "parking_count")
     @Comment("주차 대수")
-    var parkingCount: Int,
+    var parkingCount: Double,
 
     @Column(name = "elevator")
     @Comment("승강기 존재 유무")

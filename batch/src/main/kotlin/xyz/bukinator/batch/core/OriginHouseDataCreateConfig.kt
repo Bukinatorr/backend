@@ -30,7 +30,8 @@ class OriginHouseDataCreateConfig(
     private val jobRepository: JobRepository,
     private val transactionManager: PlatformTransactionManager,
     private val originHouseDataReader: OriginHouseDataReader,
-    private val houseService: HouseService,
+    private val originHouseDataProcessor: OriginHouseDataProcessor,
+    private val originHouseDataWriter: OriginHouseDataWriter
 ) {
 
     @Bean
@@ -47,38 +48,20 @@ class OriginHouseDataCreateConfig(
         return StepBuilder("oneRoomUpdateStep", jobRepository)
             .chunk<List<ExternalDataSummary>, List<HouseDto>>(STEP_BUILDER_CHUNK_SIZE, transactionManager)
             .reader(originHouseDataReader)
-            .processor(originHouseDataProcessor())
-            .writer(oneRoomItemWriter())
+            .processor(originHouseDataProcessor)
+            .writer(originHouseDataWriter)
             .build()
-    }
-
-    @Bean
-    @StepScope
-    fun originHouseDataProcessor(): ItemProcessor<List<ExternalDataSummary>, List<HouseDto>> {
-        return ItemProcessor { externalDataSummaries ->
-            externalDataSummaries.map {
-                HouseDto.of(it)
-            }
-        }
     }
 
     fun jobListener(): JobExecutionListener {
         return object : JobExecutionListener {
             override fun beforeJob(jobExecution: JobExecution) {
-                println("before job")
+                println("before job:${jobExecution.jobInstance.jobName}")
             }
 
             override fun afterJob(jobExecution: JobExecution) {
-                println("after job")
+                println("after job:${jobExecution.jobInstance.jobName}")
             }
-        }
-    }
-
-    @Bean
-    @StepScope
-    fun oneRoomItemWriter(): ItemWriter<List<HouseDto>> {
-        return ItemWriter { houseDtoList ->
-            houseService.createOrUpdateAll(houseDtoList.flatten())
         }
     }
 

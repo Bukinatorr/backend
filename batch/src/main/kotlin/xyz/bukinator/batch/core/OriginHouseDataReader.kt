@@ -14,23 +14,16 @@ class OriginHouseDataReader : ItemReader<List<ExternalDataSummary>> {
     private val geohashIterator = FETCHABLE_GEOHASH.iterator()
 
     override fun read(): List<ExternalDataSummary>? {
-        if (!geohashIterator.hasNext()) {
-            return null
-        }
-
-        val geohash = geohashIterator.next()
-        return fetchZigbangItemSummaries(geohash)
+        return if (geohashIterator.hasNext())
+            fetchZigbangItemSummaries(geohashIterator.next())
+        else
+            null
     }
 
     private fun fetchZigbangItemSummaries(geohash: String): List<ExternalDataSummary> {
         val zigbangOneroomDataFetcher = ExternalDataFetcherFactory.createFetcher(ExternalDataSource.ZIGBANG_ONEROOM)
         val itemIds = zigbangOneroomDataFetcher.fetchItemIds(geohash)
         return zigbangOneroomDataFetcher.fetchItemSummaries(itemIds)
-    }
-
-    private fun fetchZigbangItemDetail(itemId: Long): ExternalDataDetail {
-        val zigbangOneroomDataFetcher = ExternalDataFetcherFactory.createFetcher(ExternalDataSource.ZIGBANG_ONEROOM)
-        return zigbangOneroomDataFetcher.fetchItemDetail(itemId)
     }
 
     companion object {

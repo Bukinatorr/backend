@@ -1,9 +1,6 @@
 package xyz.bukinator.house.dto
 
-import xyz.bukinator.client.domain.external.ExternalDataSummary
-import xyz.bukinator.client.domain.external.HouseStatus
-import xyz.bukinator.client.domain.external.HouseType
-import xyz.bukinator.client.domain.external.SalesType
+import xyz.bukinator.client.domain.external.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
@@ -17,7 +14,7 @@ data class HouseDto(
     val houseName: String,
     val houseType: HouseType,
     val roomType: String,
-    val roomDirection: String,
+    val roomDirection: RoomDirection,
     val thumbnail: String,
     val images: List<String>,
     val priceDeposit: Int,
@@ -32,7 +29,7 @@ data class HouseDto(
     val status: HouseStatus,
     val lat: Double,
     val lng: Double,
-    val parkingCount: Int,
+    val parkingCount: Double,
     val elevator: Boolean,
     val movinDate: LocalDate,
     val approveDate: LocalDate,
@@ -57,7 +54,7 @@ data class HouseDto(
                 houseName = "",
                 houseType = origin.getHouseType(),
                 roomType = origin.getRoomType() ?: "-1",
-                roomDirection = "",
+                roomDirection = RoomDirection.UNKNOWN,
                 thumbnail = origin.getThumbnail() ?: "",
                 images = listOf(),
                 priceDeposit = origin.getPriceDeposit() ?: 0,
@@ -72,7 +69,7 @@ data class HouseDto(
                 status = origin.getStatus(),
                 lat = origin.getLocationLat() ?: 0.0,
                 lng = origin.getLocationLng() ?: 0.0,
-                parkingCount = 0,
+                parkingCount = 0.0,
                 elevator = false,
                 movinDate = LocalDate.now(),
                 approveDate = LocalDate.now(),
@@ -88,5 +85,19 @@ data class HouseDto(
                 addressJibun = ""
             )
         }
+    }
+
+    fun enhancedWith(detail: ExternalDataDetail): HouseDto {
+        return this.copy(
+            houseName = detail.getHouseName() ?: "",
+            roomDirection = detail.getRoomDirection(),
+            residenceType = detail.getResidenceType() ?: "",
+            images = detail.getImages() ?: listOf(),
+            parkingCount = detail.getParkingCount() ?: 0.0,
+            elevator = detail.hasElevator() ?: false,
+            priceManageIncludes = detail.getPriceManageIncludes() ?: listOf(),
+            description = detail.getDescription() ?: "",
+            options = detail.getOptions() ?: listOf(),
+        )
     }
 }

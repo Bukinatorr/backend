@@ -13,17 +13,18 @@ interface ExternalDataDetail {
     fun getApproveDate(): String?
     fun getPnu(): String?
     fun getOptions(): List<String>?
+    fun getUpdatedAt(): String?
 
     // 집 정보
     fun getSalesType(): SalesType?
-    fun getHouseType(): String?
+    fun getHouseType(): HouseType
     fun getAreaContract(): Double?
     fun getAreaSupply(): Double?
     fun getAreaIndividual(): Double?
     fun getFloorTotal(): Int?
     fun getFloorTarget(): Int?
     fun getRoomType(): String?
-    fun getRoomDirection(): RoomDirection?
+    fun getRoomDirection(): RoomDirection
     fun getParkingCount(): Double?
     fun hasElevator(): Boolean?
     fun getResidenceType(): String?

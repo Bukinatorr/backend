@@ -4,6 +4,7 @@ import xyz.bukinator.client.domain.external.ExternalDataDetail
 import xyz.bukinator.client.domain.external.ExternalDataFetcher
 import xyz.bukinator.client.domain.external.ExternalDataSummary
 import xyz.bukinator.client.domain.fetcher.zigbang.internal.DataFetcher
+import xyz.bukinator.client.domain.model.ZigbangDataDetail
 import xyz.bukinator.client.domain.model.ZigbangDataSummary
 
 internal class ZigbangOneroomDataFetcher : ExternalDataFetcher {
@@ -24,6 +25,6 @@ internal class ZigbangOneroomDataFetcher : ExternalDataFetcher {
     }
 
     override fun fetchItemDetail(itemId: Long): ExternalDataDetail {
-        return dataFetcher.fetchItemDetail(itemId)
+        return ZigbangDataDetail(dataFetcher.fetchItemDetail(itemId).item)
     }
 }
