@@ -50,7 +50,7 @@ class HouseQueryService(
 //            } else {
 //                buildRentAndDepositPredicate(criteria, root, criteriaBuilder, predicates)
 //            }
-//            buildRentAndDepositPredicate(criteria, root, criteriaBuilder, predicates)
+            buildRentAndDepositPredicate(criteria, root, criteriaBuilder, predicates)
 
             criteria.roomType?.let {
                 // TODO: Fix to use enum
