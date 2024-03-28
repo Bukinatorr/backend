@@ -44,12 +44,13 @@ class HouseQueryService(
                 predicates.add(criteriaBuilder.equal(salesType, it))
             }
 
-            val isRentAndDepositConvertible = criteria.isRentAndDepositConvertible
-            if (isRentAndDepositConvertible) {
-                buildConvertibleRentAndDepositPredicate(criteria, root, criteriaBuilder, predicates)
-            } else {
-                buildRentAndDepositPredicate(criteria, root, criteriaBuilder, predicates)
-            }
+//            val isRentAndDepositConvertible = criteria.isRentAndDepositConvertible
+//            if (isRentAndDepositConvertible) {
+//                buildConvertibleRentAndDepositPredicate(criteria, root, criteriaBuilder, predicates)
+//            } else {
+//                buildRentAndDepositPredicate(criteria, root, criteriaBuilder, predicates)
+//            }
+//            buildRentAndDepositPredicate(criteria, root, criteriaBuilder, predicates)
 
             criteria.roomType?.let {
                 // TODO: Fix to use enum
@@ -114,8 +115,7 @@ class HouseQueryService(
         }
 
         criteria.rent?.takeIf {
-            // TODO: Fix to use enum
-            criteria.salesType == "월세" || criteria.salesType == null
+            criteria.salesType == "MONTHLY" || criteria.salesType == null
         }?.let {
             val price = root.get<Price>("price")
             val rent = if (criteria.isRentIncludesManage) {
@@ -151,9 +151,14 @@ class HouseQueryService(
                 criteriaBuilder.prod(price.get<Double>("priceManage"), 10000)
             ).`as`(Int::class.java)
 
-            calculateScore(rentAndManage, deposit)
+            val result = calculateScore(rentAndManage, deposit)
+            println(result.toString())
+            result
+
         } else {
-            calculateScore(rent, deposit)
+            val result = calculateScore(rent, deposit)
+            println(result.toString())
+            result
         }
 
         val maxScore = criteria.rent.max.plus((criteria.deposit.max / UNIT_DEPOSIT * DEFAULT_RENT_PER_UNIT_DEPOSIT))
