@@ -29,6 +29,8 @@ data class ListHouseRequest(
         val maxRent: Int?,
         val minRent: Int?,
         val parkingCount: Int?,
+        val isRentIncludesManage: Boolean?,
+        val isRentAndDepositConvertible: Boolean?,
     ) {
         fun toQueryCriteria(): HouseQueryCriteria {
             return HouseQueryCriteria(
@@ -67,7 +69,9 @@ data class ListHouseRequest(
                 } else {
                     null
                 },
-                parkingCount = parkingCount
+                parkingCount = parkingCount,
+                isRentIncludesManage = isRentIncludesManage ?: false,
+                isRentAndDepositConvertible = isRentAndDepositConvertible ?: false
             )
         }
     }
